@@ -40,6 +40,16 @@ const NavbarNormal = () => {
     navigate("/dashboard/register");
   };
 
+  const handleClickApiBancoCentral = () => {
+    //setAnchorEl(null);
+    navigate("/dashboard/api-banco-central");
+  };
+
+  const handleClickRpaRossi = () => {
+    //setAnchorEl(null);
+    navigate("/dashboard/rpa-rossi");
+  };
+
   return (
     <>
       <header
@@ -61,12 +71,12 @@ const NavbarNormal = () => {
                 </a>
                 <ul>
                   <li>
-                    <a href="#" onClick={handleClickAplicaciones}>
+                    <a href="#" onClick={handleClickApiBancoCentral}>
                       Agenda API Banco Central
                     </a>
                   </li>
                   <li>
-                    <a href="#" onClick={handleClickPrivilegios}>
+                    <a href="#" onClick={handleClickRpaRossi}>
                       Robot Agencia Rossi
                     </a>
                   </li>

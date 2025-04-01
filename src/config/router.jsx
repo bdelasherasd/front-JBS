@@ -17,6 +17,10 @@ import AplicacionesDelete from "../pages/Aplicaciones/Delete";
 
 import PrivilegiosIndex from "../pages/Privilegios/Index";
 
+import ApiBancoCentral from "../pages/ApiBancoCentral/Index";
+
+import RpaRossi from "../pages/RpaRossi/Index";
+
 export const router = createBrowserRouter([
   {
     path: "/",
@@ -44,6 +48,10 @@ export const router = createBrowserRouter([
           { path: "aplicacion-delete/:id", element: <AplicacionesDelete /> },
 
           { path: "privilegios", element: <PrivilegiosIndex /> },
+
+          { path: "api-banco-central", element: <ApiBancoCentral /> },
+
+          { path: "rpa-rossi", element: <RpaRossi /> },
 
           {
             path: "register",

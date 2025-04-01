@@ -50,6 +50,16 @@ const NavbarMobile = () => {
     navigate("/dashboard/privilegios");
   };
 
+  const handleClickApiBAncoCentral = () => {
+    //setAnchorEl(null);
+    navigate("/dashboard/api-banco-central");
+  };
+
+  const handleClickRpaRossi = () => {
+    //setAnchorEl(null);
+    navigate("/dashboard/rpa-rossi");
+  };
+
   return (
     <Navbar expand="lg" bg="dark" variant="dark" className="px-3">
       <Container>
@@ -109,10 +119,10 @@ const NavbarMobile = () => {
               onMouseEnter={() => setShowDropdownImportaciones(true)}
               onMouseLeave={() => setShowDropdownImportaciones(false)}
             >
-              <NavDropdown.Item href="#" onClick={handleClickAplicaciones}>
+              <NavDropdown.Item href="#" onClick={handleClickApiBAncoCentral}>
                 Agenda API Banco Central
               </NavDropdown.Item>
-              <NavDropdown.Item href="#" onClick={handleClickAplicaciones}>
+              <NavDropdown.Item href="#" onClick={handleClickRpaRossi}>
                 Robot Agencia Rossi
               </NavDropdown.Item>
             </NavDropdown>
