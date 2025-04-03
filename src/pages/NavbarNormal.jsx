@@ -50,6 +50,11 @@ const NavbarNormal = () => {
     navigate("/dashboard/rpa-rossi");
   };
 
+  const handleClickTareasProgramadas = () => {
+    //setAnchorEl(null);
+    navigate("/dashboard/tareas-programadas");
+  };
+
   return (
     <>
       <header
@@ -116,6 +121,12 @@ const NavbarNormal = () => {
                         </a>
                       </li>
                     </ul>
+                  </li>
+
+                  <li>
+                    <a href="#" onClick={handleClickTareasProgramadas}>
+                      Tareas Programadas
+                    </a>
                   </li>
                 </ul>
               </li>

@@ -19,6 +19,8 @@ import PrivilegiosIndex from "../pages/Privilegios/Index";
 
 import ApiBancoCentral from "../pages/ApiBancoCentral/Index";
 
+import TareasProgramadas from "../pages/Tareas/Index";
+
 import RpaRossi from "../pages/RpaRossi/Index";
 
 export const router = createBrowserRouter([
@@ -52,6 +54,8 @@ export const router = createBrowserRouter([
           { path: "api-banco-central", element: <ApiBancoCentral /> },
 
           { path: "rpa-rossi", element: <RpaRossi /> },
+
+          { path: "tareas-programadas", element: <TareasProgramadas /> },
 
           {
             path: "register",

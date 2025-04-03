@@ -60,6 +60,11 @@ const NavbarMobile = () => {
     navigate("/dashboard/rpa-rossi");
   };
 
+  const handleClickTareasProgramadas = () => {
+    //setAnchorEl(null);
+    navigate("/dashboard/tareas-programadas");
+  };
+
   return (
     <Navbar expand="lg" bg="dark" variant="dark" className="px-3">
       <Container>
@@ -79,6 +84,9 @@ const NavbarMobile = () => {
               </NavDropdown.Item>
               <NavDropdown.Item href="#" onClick={handleClickPrivilegios}>
                 Privilegios
+              </NavDropdown.Item>
+              <NavDropdown.Item href="#" onClick={handleClickTareasProgramadas}>
+                Tareas Programadas
               </NavDropdown.Item>
               <NavDropdown.Divider />
 
