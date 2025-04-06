@@ -28,7 +28,7 @@ const ListUsers = () => {
           variant="contained"
           color="error"
           size="small"
-          onClick={handleClickDelete}
+          onClick={() => handleClickDelete(params.row.id)}
         >
           Eliminar
         </Button>
@@ -36,9 +36,8 @@ const ListUsers = () => {
     },
   ];
 
-  const handleClickDelete = (event) => {
-    const selectedRows = event.row;
-    const id = selectedRows.id;
+  const handleClickDelete = (id) => {
+    console.log("id => ", id);
     Swal.fire({
       title: "¿Está seguro?",
       text: "No podrás revertir esto",
@@ -49,8 +48,13 @@ const ListUsers = () => {
       confirmButtonText: "Sí, eliminar",
     }).then((result) => {
       if (result.isConfirmed) {
-        fetch(`${urlBackend}/apiBancoCentral/delete/${id}`, {
-          method: "DELETE",
+        fetch(`${urlBackend}/apiBancoCentral/eliminaagenda`, {
+          method: "POST",
+          mode: "cors",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ id: id }),
         })
           .then((response) => {
             if (response.ok) {
