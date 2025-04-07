@@ -8,6 +8,7 @@ import { Box, Avatar, Typography, TextField, Button } from "@mui/material";
 import AddAPhotoIcon from "@mui/icons-material/AddAPhoto";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import Swal from "sweetalert2";
+import logo from "../assets/jbs-s-a-1.svg";
 
 const Recover = () => {
   let [email, setEmail] = useState("");
@@ -139,12 +140,14 @@ const Recover = () => {
   };
 
   return (
-    <Box sx={{ mt: 10, maxWidth: 400, mx: "auto", textAlign: "center", px: 3 }}>
-      <Avatar sx={{ mx: "auto", bgcolor: "#111", mb: 2 }}>
+    <Box sx={{ mt: 3, maxWidth: 400, mx: "auto", textAlign: "center", px: 3 }}>
+      {/* <Avatar sx={{ mx: "auto", bgcolor: "#111", mb: 2 }}>
         <AddAPhotoIcon />
-      </Avatar>
+      </Avatar> */}
 
-      <Typography variant="h5" sx={{ mb: 3 }} component="h1">
+      <img src={logo} alt="Logo" width="50%" height="50%" />
+
+      <Typography variant="h5" sx={{ mb: 3, mt: 2 }} component="h1">
         Recupera Contraseña
       </Typography>
 

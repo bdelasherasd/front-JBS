@@ -13,10 +13,12 @@ import {
   MenuItem,
   FormControl,
   InputLabel,
+  List,
 } from "@mui/material";
 import AddAPhotoIcon from "@mui/icons-material/AddAPhoto";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import Swal from "sweetalert2";
+import ListDolar from "../../components/ListDolar";
 
 const Index = () => {
   let [dia, setDia] = useState(0);
@@ -214,6 +216,8 @@ const Index = () => {
             </Box>
           )}
         </Formik>
+
+        <ListDolar />
       </Box>
     </Container>
   );

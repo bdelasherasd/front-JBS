@@ -5,6 +5,8 @@ import { Formik } from "formik";
 import * as Yup from "yup";
 import { Box, Avatar, Typography, TextField, Button } from "@mui/material";
 import AddAPhotoIcon from "@mui/icons-material/AddAPhoto";
+import logo from "../assets/jbs-s-a-1.svg";
+
 import { login } from "../config/firebase";
 const urlBackend = import.meta.env.VITE_URL_BACKEND;
 
@@ -89,11 +91,12 @@ const Login = () => {
 
   return (
     <Box sx={{ mt: 10, maxWidth: 400, mx: "auto", textAlign: "center", px: 3 }}>
-      <Avatar sx={{ mx: "auto", bgcolor: "#111", mb: 2 }}>
-        <AddAPhotoIcon />
-      </Avatar>
+      {/* <Avatar sx={{ mx: "auto", bgcolor: "white", mb: 2 }}> */}
+      {/* <AddAPhotoIcon /> */}
+      <img src={logo} alt="Logo" width="50%" height="50%" />
+      {/* </Avatar> */}
 
-      <Typography variant="h5" sx={{ mb: 3 }} component="h1">
+      <Typography variant="h5" sx={{ mb: 3, mt: 3 }} component="h1">
         Login
       </Typography>
 

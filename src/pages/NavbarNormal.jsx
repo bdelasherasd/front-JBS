@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { useUserContext } from "../context/UserContext";
 import { logout } from "../config/firebase";
+import logo from "../assets/jbs-s-a-1.svg";
 
 const NavbarNormal = () => {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -63,8 +64,9 @@ const NavbarNormal = () => {
       >
         <div className="container position-relative d-flex align-items-center bg-body-secondary p-3 rounded mt-3">
           <a href="#" className="logo d-flex align-items-center me-auto">
-            <h3 className="sitename">JBS Chile</h3>
-            <span>.</span>
+            {/* <h3 className="sitename">JBS Chile</h3>
+            <span>.</span> */}
+            <img src={logo} alt="Logo" width="100%" height="100%" />
           </a>
 
           <nav id="navmenu" className="navmenu">
