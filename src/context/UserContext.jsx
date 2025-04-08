@@ -5,9 +5,14 @@ import { createContext } from "react";
 const UserContext = createContext();
 
 export default function UserContextProvider({ children }) {
-  const [user, setUser] = useState(false);
+  //const [user, setUser] = useState(false);
   const [rutasPermitidas, setRutasPermitidas] = useState([]);
   const [rutasControladas, setRutasControladas] = useState([]);
+
+  const [user, setUser] = useState(() => {
+    const saved = sessionStorage.getItem("user");
+    return saved ? JSON.parse(saved) : false;
+  });
 
   return (
     <UserContext.Provider

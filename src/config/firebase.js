@@ -7,7 +7,7 @@ export const login = async ({ email, password }) => {
     email: email,
     password: password,
   };
-  console.log("login " + sessionStorage);
+  console.log("login ", ip, port);
   try {
     let response = await fetch(`${ip}:${port}/usuario/login`, {
       method: "POST",

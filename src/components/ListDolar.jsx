@@ -11,8 +11,8 @@ const ListDolar = () => {
   const navigate = useNavigate();
 
   const columns = [
-    { field: "id", headerName: "ID", width: 50, order: "desc" },
-    { field: "fecha", headerName: "Fecha", width: 150 },
+    { field: "id", headerName: "ID", width: 50 },
+    { field: "fecha", headerName: "Fecha", width: 150, order: "desc" },
     { field: "valor", headerName: "Valor", width: 120 },
   ];
 

@@ -13,6 +13,7 @@ const NavbarNormal = () => {
     try {
       let result = await logout();
       setUser(false);
+      sessionStorage.clear();
       console.log(result);
     } catch (error) {
       console.log(error.message);
