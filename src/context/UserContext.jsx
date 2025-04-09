@@ -11,6 +11,7 @@ export default function UserContextProvider({ children }) {
 
   const [user, setUser] = useState(() => {
     const saved = sessionStorage.getItem("user");
+    console.log("credenciales desde session", saved);
     return saved ? JSON.parse(saved) : false;
   });
 

@@ -24,9 +24,10 @@ const ListDolar = () => {
   };
 
   useEffect(() => {
-    fetch(`${urlBackend}/apiBancoCentral/listDolar`)
-      .then((response) => response.json())
-      .then((data) => {
+    const fetchData = async () => {
+      try {
+        let response = await fetch(`${urlBackend}/apiBancoCentral/listDolar`);
+        let data = await response.json();
         setTableData(
           data.map((e) => ({
             id: e.id,
@@ -34,8 +35,12 @@ const ListDolar = () => {
             valor: e.valor,
           }))
         );
-      })
-      .catch((error) => console.error("Error:", error));
+      } catch (error) {
+        console.error("Error fetching data:", error);
+        //navigate("/error");
+      }
+    };
+    fetchData();
   }, []);
 
   return (

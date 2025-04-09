@@ -48,6 +48,7 @@ const Login = () => {
       const credentialUser = await login({ email: email, password: password });
       //console.log(credentialUser);
       if (!credentialUser.error) {
+        console.log("credenciales login", credentialUser);
         sessionStorage.setItem("user", JSON.stringify(credentialUser));
         setUser(credentialUser);
         const rutas = await getRutasPermitidas(credentialUser.idUsuario);
