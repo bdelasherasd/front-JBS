@@ -1,3 +1,5 @@
+import CryptoJS from "crypto-js";
+
 const url = window.location.href.split(":");
 const ip = url[0] + ":" + url[1];
 const port = 3000;
@@ -7,6 +9,10 @@ export const login = async ({ email, password }) => {
     email: email,
     password: password,
   };
+  const encrypted = CryptoJS.AES.encrypt(
+    JSON.stringify(data),
+    "ZP7777"
+  ).toString();
   console.log("login ", ip, port);
   try {
     let response = await fetch(`${ip}:${port}/usuario/login`, {
@@ -15,7 +21,7 @@ export const login = async ({ email, password }) => {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(data),
+      body: JSON.stringify({ data: encrypted }),
     });
     let dataResponse = await response.json();
     return dataResponse;
