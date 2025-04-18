@@ -23,6 +23,8 @@ import TareasProgramadas from "../pages/Tareas/Index";
 
 import RpaRossi from "../pages/RpaRossi/Index";
 
+import CargaSku from "../pages/CargaSku/Index";
+
 export const router = createBrowserRouter([
   {
     path: "/",
@@ -54,6 +56,8 @@ export const router = createBrowserRouter([
           { path: "api-banco-central", element: <ApiBancoCentral /> },
 
           { path: "rpa-rossi", element: <RpaRossi /> },
+
+          { path: "carga-sku", element: <CargaSku /> },
 
           { path: "tareas-programadas", element: <TareasProgramadas /> },
 

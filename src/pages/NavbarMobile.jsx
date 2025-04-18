@@ -65,6 +65,11 @@ const NavbarMobile = () => {
     navigate("/dashboard/tareas-programadas");
   };
 
+  const handleClickCargaSku = () => {
+    //setAnchorEl(null);
+    navigate("/dashboard/carga-sku");
+  };
+
   return (
     <Navbar expand="lg" bg="dark" variant="dark" className="px-3">
       <Container>
@@ -132,6 +137,9 @@ const NavbarMobile = () => {
               </NavDropdown.Item>
               <NavDropdown.Item href="#" onClick={handleClickRpaRossi}>
                 Robot Agencia Rossi
+              </NavDropdown.Item>
+              <NavDropdown.Item href="#" onClick={handleClickCargaSku}>
+                Carga SKU
               </NavDropdown.Item>
             </NavDropdown>
 

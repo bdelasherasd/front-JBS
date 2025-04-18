@@ -57,6 +57,11 @@ const NavbarNormal = () => {
     navigate("/dashboard/tareas-programadas");
   };
 
+  const handleClickCargaSku = () => {
+    //setAnchorEl(null);
+    navigate("/dashboard/carga-sku");
+  };
+
   return (
     <>
       <header
@@ -86,6 +91,11 @@ const NavbarNormal = () => {
                   <li>
                     <a href="#" onClick={handleClickRpaRossi}>
                       Robot Agencia Rossi
+                    </a>
+                  </li>
+                  <li>
+                    <a href="#" onClick={handleClickCargaSku}>
+                      Carga SKU
                     </a>
                   </li>
                 </ul>
