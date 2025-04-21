@@ -70,6 +70,11 @@ const NavbarMobile = () => {
     navigate("/dashboard/carga-sku");
   };
 
+  const handleClickImportacion = () => {
+    //setAnchorEl(null);
+    navigate("/dashboard/importacion");
+  };
+
   return (
     <Navbar expand="lg" bg="dark" variant="dark" className="px-3">
       <Container>
@@ -140,6 +145,9 @@ const NavbarMobile = () => {
               </NavDropdown.Item>
               <NavDropdown.Item href="#" onClick={handleClickCargaSku}>
                 Carga SKU
+              </NavDropdown.Item>
+              <NavDropdown.Item href="#" onClick={handleClickImportacion}>
+                Importaciones
               </NavDropdown.Item>
             </NavDropdown>
 

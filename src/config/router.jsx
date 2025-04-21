@@ -25,6 +25,9 @@ import RpaRossi from "../pages/RpaRossi/Index";
 
 import CargaSku from "../pages/CargaSku/Index";
 
+import Importacion from "../pages/Importacion/Index";
+import ImportacionDetalle from "../pages/Importacion/IndexDetalle";
+
 export const router = createBrowserRouter([
   {
     path: "/",
@@ -60,6 +63,8 @@ export const router = createBrowserRouter([
           { path: "carga-sku", element: <CargaSku /> },
 
           { path: "tareas-programadas", element: <TareasProgramadas /> },
+          { path: "importacion", element: <Importacion /> },
+          { path: "importacion-detalle/:id", element: <ImportacionDetalle /> },
 
           {
             path: "register",

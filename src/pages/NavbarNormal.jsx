@@ -62,6 +62,11 @@ const NavbarNormal = () => {
     navigate("/dashboard/carga-sku");
   };
 
+  const handleClickImportacion = () => {
+    //setAnchorEl(null);
+    navigate("/dashboard/importacion");
+  };
+
   return (
     <>
       <header
@@ -96,6 +101,11 @@ const NavbarNormal = () => {
                   <li>
                     <a href="#" onClick={handleClickCargaSku}>
                       Carga SKU
+                    </a>
+                  </li>
+                  <li>
+                    <a href="#" onClick={handleClickImportacion}>
+                      Importaciones
                     </a>
                   </li>
                 </ul>
