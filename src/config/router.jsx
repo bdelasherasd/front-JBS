@@ -27,6 +27,7 @@ import CargaSku from "../pages/CargaSku/Index";
 
 import Importacion from "../pages/Importacion/Index";
 import ImportacionDetalle from "../pages/Importacion/IndexDetalle";
+import ImportacionUpdateDetalle from "../pages/Importacion/UpdateDetalle";
 
 export const router = createBrowserRouter([
   {
@@ -65,6 +66,10 @@ export const router = createBrowserRouter([
           { path: "tareas-programadas", element: <TareasProgramadas /> },
           { path: "importacion", element: <Importacion /> },
           { path: "importacion-detalle/:id", element: <ImportacionDetalle /> },
+          {
+            path: "importacion-update-detalle/:idImportacion/:index",
+            element: <ImportacionUpdateDetalle />,
+          },
 
           {
             path: "register",

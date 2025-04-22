@@ -72,14 +72,18 @@ const IndexDetalle = () => {
     navigate("/dashboard/importacion");
   };
 
+  const handleClickModificaDetalle = (index) => {
+    navigate(`/dashboard/importacion-update-detalle/${id}/${index}`);
+  };
+
   return (
     <Container maxWidth="lg">
       <Box
         sx={{
-          p: 4,
+          p: 2,
           bgcolor: "background.paper",
           borderRadius: 2,
-          boxShadow: 3,
+          boxShadow: 4,
           mt: 2,
           mb: 2,
         }}
@@ -246,6 +250,15 @@ const IndexDetalle = () => {
           >
             <Box flex={1}>
               <Typography variant="h10">Detalle</Typography>
+              <Button
+                variant="contained"
+                color="info"
+                size="small"
+                sx={{ ml: 2, mb: 1 }}
+                onClick={handleClickRegresar}
+              >
+                +
+              </Button>
               <Paper variant="outlined">
                 <Table
                   size="small"
@@ -291,7 +304,9 @@ const IndexDetalle = () => {
                                 color="secondary"
                                 size="small"
                                 sx={{ mt: 0 }}
-                                onClick={handleClickRegresar}
+                                onClick={() =>
+                                  handleClickModificaDetalle(index)
+                                }
                               >
                                 Modificar
                               </Button>
@@ -316,6 +331,15 @@ const IndexDetalle = () => {
 
             <Box flex={1} sx={{ mt: 3 }}>
               <Typography variant="h10">Packing List</Typography>
+              <Button
+                variant="contained"
+                color="info"
+                size="small"
+                sx={{ ml: 2, mb: 1 }}
+                onClick={handleClickRegresar}
+              >
+                +
+              </Button>
               <Paper variant="outlined">
                 <Table
                   size="small"
@@ -324,58 +348,71 @@ const IndexDetalle = () => {
                 >
                   <TableHead>
                     <TableRow>
-                      <TableCell>Codigo</TableCell>
-                      <TableCell>Cantidad</TableCell>
-                      <TableCell>Valor</TableCell>
+                      <TableCell>Descripcion</TableCell>
+                      <TableCell>SIF</TableCell>
+                      <TableCell>Vencimiento</TableCell>
+                      <TableCell>Cajas Pallet</TableCell>
+                      <TableCell>Peso Neto</TableCell>
+                      <TableCell>Peso Bruto</TableCell>
                       <TableCell></TableCell>
                     </TableRow>
                   </TableHead>
                   <TableBody>
-                    {tableDetalle.map((e, index) => (
+                    {tablePacking.map((e, index) => (
                       <TableRow key={index}>
                         <TableCell>
-                          <Typography
-                            variant="caption"
-                            sx={{
-                              color: e.codigoInvalido ? "red" : "inherit",
-                            }}
-                          >
-                            {e.codigo}
+                          <Typography variant="caption">
+                            {e.descripcion.substring(0, 20)}
                           </Typography>
                         </TableCell>
+
+                        <TableCell>
+                          <Typography variant="caption">{e.sif}</Typography>
+                        </TableCell>
+
                         <TableCell>
                           <Typography variant="caption">
-                            {e.cantidad}
+                            {e.fechaVencimiento}
                           </Typography>
                         </TableCell>
 
                         <TableCell>
-                          <Typography variant="caption">{e.valor}</Typography>
+                          <Typography variant="caption">
+                            {e.CajasPallet}
+                          </Typography>
                         </TableCell>
 
                         <TableCell>
-                          {e.codigoInvalido && (
-                            <>
-                              <Button
-                                variant="contained"
-                                color="secondary"
-                                size="small"
-                                sx={{ mt: 0 }}
-                                onClick={handleClickRegresar}
-                              >
-                                Modificar
-                              </Button>
-                              <Button
-                                variant="contained"
-                                color="error"
-                                size="small"
-                                sx={{ ml: 2 }}
-                                onClick={handleClickRegresar}
-                              >
-                                Eliminar
-                              </Button>
-                            </>
-                          )}
+                          <Typography variant="caption">
+                            {e.PesoNeto}
+                          </Typography>
+                        </TableCell>
+
+                        <TableCell>
+                          <Typography variant="caption">
+                            {e.PesoBruto}
+                          </Typography>
+                        </TableCell>
+
+                        <TableCell>
+                          <Button
+                            variant="contained"
+                            color="secondary"
+                            size="small"
+                            sx={{ mt: 0 }}
+                            onClick={handleClickRegresar}
+                          >
+                            Modificar
+                          </Button>
+                          <Button
+                            variant="contained"
+                            color="error"
+                            size="small"
+                            sx={{ ml: 2 }}
+                            onClick={handleClickRegresar}
+                          >
+                            Eliminar
+                          </Button>
                         </TableCell>
                       </TableRow>
                     ))}
