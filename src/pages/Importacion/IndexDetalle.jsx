@@ -71,8 +71,8 @@ const IndexDetalle = () => {
           `${ip}:${port}/importaciones/listAdicionales/${id}`
         );
         let data2 = await response2.json();
-        setTableDetalle(JSON.parse(data2.detalles));
-        setTablePacking(JSON.parse(data2.packingList));
+        setTableDetalle(JSON.parse(data2.detalles || "[]"));
+        setTablePacking(JSON.parse(data2.packingList || "[]"));
       } catch (error) {
         console.error("Error fetching data:", error);
         //navigate("/error");
@@ -259,26 +259,36 @@ const IndexDetalle = () => {
                     </TableRow>
                   </TableHead>
                   <TableBody>
-                    {gastos.map((gasto, index) => (
-                      <TableRow key={index}>
-                        <TableCell>
-                          <Typography variant="caption">
-                            {gasto.nombreGasto}
-                          </Typography>
-                        </TableCell>
-                        <TableCell>
-                          <Typography variant="caption">
-                            {gasto.moneda}
-                          </Typography>
-                        </TableCell>
+                    {gastos.length > 0 ? (
+                      gastos.map((gasto, index) => (
+                        <TableRow key={index}>
+                          <TableCell>
+                            <Typography variant="caption">
+                              {gasto.nombreGasto}
+                            </Typography>
+                          </TableCell>
+                          <TableCell>
+                            <Typography variant="caption">
+                              {gasto.moneda}
+                            </Typography>
+                          </TableCell>
 
-                        <TableCell>
+                          <TableCell>
+                            <Typography variant="caption">
+                              {gasto.valor}
+                            </Typography>
+                          </TableCell>
+                        </TableRow>
+                      ))
+                    ) : (
+                      <TableRow>
+                        <TableCell colSpan={3} align="center">
                           <Typography variant="caption">
-                            {gasto.valor}
+                            No hay datos disponibles
                           </Typography>
                         </TableCell>
                       </TableRow>
-                    ))}
+                    )}
                   </TableBody>
                 </Table>
               </Paper>
@@ -300,26 +310,36 @@ const IndexDetalle = () => {
                     </TableRow>
                   </TableHead>
                   <TableBody>
-                    {desembolsos.map((gasto, index) => (
-                      <TableRow key={index}>
-                        <TableCell>
-                          <Typography variant="caption">
-                            {gasto.nombreGasto}
-                          </Typography>
-                        </TableCell>
-                        <TableCell>
-                          <Typography variant="caption">
-                            {gasto.moneda}
-                          </Typography>
-                        </TableCell>
+                    {desembolsos.length > 0 ? (
+                      desembolsos.map((gasto, index) => (
+                        <TableRow key={index}>
+                          <TableCell>
+                            <Typography variant="caption">
+                              {gasto.nombreGasto}
+                            </Typography>
+                          </TableCell>
+                          <TableCell>
+                            <Typography variant="caption">
+                              {gasto.moneda}
+                            </Typography>
+                          </TableCell>
 
-                        <TableCell>
+                          <TableCell>
+                            <Typography variant="caption">
+                              {gasto.valor}
+                            </Typography>
+                          </TableCell>
+                        </TableRow>
+                      ))
+                    ) : (
+                      <TableRow>
+                        <TableCell colSpan={3} align="center">
                           <Typography variant="caption">
-                            {gasto.valor}
+                            No hay datos disponibles
                           </Typography>
                         </TableCell>
                       </TableRow>
-                    ))}
+                    )}
                   </TableBody>
                 </Table>
               </Paper>
@@ -361,52 +381,66 @@ const IndexDetalle = () => {
                     </TableRow>
                   </TableHead>
                   <TableBody>
-                    {tableDetalle.map((e, index) => (
-                      <TableRow key={index}>
-                        <TableCell>
-                          <Typography
-                            variant="caption"
-                            sx={{
-                              color: e.codigoInvalido ? "red" : "inherit",
-                            }}
-                          >
-                            {e.codigo}
-                          </Typography>
-                        </TableCell>
-                        <TableCell>
+                    {tableDetalle.length > 0 ? (
+                      tableDetalle.map((e, index) => (
+                        <TableRow key={index}>
+                          <TableCell>
+                            <Typography
+                              variant="caption"
+                              sx={{
+                                color: e.codigoInvalido ? "red" : "inherit",
+                              }}
+                            >
+                              {e.codigo}
+                            </Typography>
+                          </TableCell>
+                          <TableCell>
+                            <Typography variant="caption">
+                              {e.cantidad}
+                            </Typography>
+                          </TableCell>
+
+                          <TableCell>
+                            <Typography variant="caption">{e.valor}</Typography>
+                          </TableCell>
+
+                          <TableCell>
+                            <>
+                              <Button
+                                variant="contained"
+                                color="secondary"
+                                size="small"
+                                sx={{ mt: 0 }}
+                                onClick={() =>
+                                  handleClickModificaDetalle(index)
+                                }
+                              >
+                                Modificar
+                              </Button>
+                              <Button
+                                variant="contained"
+                                color="error"
+                                size="small"
+                                sx={{ ml: 2 }}
+                                onClick={() =>
+                                  handleClickEliminarDetalle(index)
+                                }
+                              >
+                                Eliminar
+                              </Button>
+                            </>
+                          </TableCell>
+                        </TableRow>
+                      ))
+                    ) : (
+                      <TableRow>
+                        <TableCell colSpan={4} align="center">
                           <Typography variant="caption">
-                            {e.cantidad}
+                            No hay datos disponibles
                           </Typography>
-                        </TableCell>
-
-                        <TableCell>
-                          <Typography variant="caption">{e.valor}</Typography>
-                        </TableCell>
-
-                        <TableCell>
-                          <>
-                            <Button
-                              variant="contained"
-                              color="secondary"
-                              size="small"
-                              sx={{ mt: 0 }}
-                              onClick={() => handleClickModificaDetalle(index)}
-                            >
-                              Modificar
-                            </Button>
-                            <Button
-                              variant="contained"
-                              color="error"
-                              size="small"
-                              sx={{ ml: 2 }}
-                              onClick={() => handleClickEliminarDetalle(index)}
-                            >
-                              Eliminar
-                            </Button>
-                          </>
                         </TableCell>
                       </TableRow>
-                    ))}
+                    )}
                   </TableBody>
                 </Table>
               </Paper>
@@ -441,64 +475,74 @@ const IndexDetalle = () => {
                     </TableRow>
                   </TableHead>
                   <TableBody>
-                    {tablePacking.map((e, index) => (
-                      <TableRow key={index}>
-                        <TableCell>
+                    {tablePacking.length > 0 ? (
+                      tablePacking.map((e, index) => (
+                        <TableRow key={index}>
+                          <TableCell>
+                            <Typography variant="caption">
+                              {e.descripcion.substring(0, 20)}
+                            </Typography>
+                          </TableCell>
+
+                          <TableCell>
+                            <Typography variant="caption">{e.sif}</Typography>
+                          </TableCell>
+
+                          <TableCell>
+                            <Typography variant="caption">
+                              {e.fechaVencimiento}
+                            </Typography>
+                          </TableCell>
+
+                          <TableCell>
+                            <Typography variant="caption">
+                              {e.CajasPallet}
+                            </Typography>
+                          </TableCell>
+
+                          <TableCell>
+                            <Typography variant="caption">
+                              {e.PesoNeto}
+                            </Typography>
+                          </TableCell>
+
+                          <TableCell>
+                            <Typography variant="caption">
+                              {e.PesoBruto}
+                            </Typography>
+                          </TableCell>
+
+                          <TableCell>
+                            <Button
+                              variant="contained"
+                              color="secondary"
+                              size="small"
+                              sx={{ mt: 0 }}
+                              onClick={handleClickRegresar}
+                            >
+                              Modificar
+                            </Button>
+                            <Button
+                              variant="contained"
+                              color="error"
+                              size="small"
+                              sx={{ ml: 2 }}
+                              onClick={handleClickRegresar}
+                            >
+                              Eliminar
+                            </Button>
+                          </TableCell>
+                        </TableRow>
+                      ))
+                    ) : (
+                      <TableRow>
+                        <TableCell colSpan={7} align="center">
                           <Typography variant="caption">
-                            {e.descripcion.substring(0, 20)}
+                            No hay datos disponibles
                           </Typography>
-                        </TableCell>
-
-                        <TableCell>
-                          <Typography variant="caption">{e.sif}</Typography>
-                        </TableCell>
-
-                        <TableCell>
-                          <Typography variant="caption">
-                            {e.fechaVencimiento}
-                          </Typography>
-                        </TableCell>
-
-                        <TableCell>
-                          <Typography variant="caption">
-                            {e.CajasPallet}
-                          </Typography>
-                        </TableCell>
-
-                        <TableCell>
-                          <Typography variant="caption">
-                            {e.PesoNeto}
-                          </Typography>
-                        </TableCell>
-
-                        <TableCell>
-                          <Typography variant="caption">
-                            {e.PesoBruto}
-                          </Typography>
-                        </TableCell>
-
-                        <TableCell>
-                          <Button
-                            variant="contained"
-                            color="secondary"
-                            size="small"
-                            sx={{ mt: 0 }}
-                            onClick={handleClickRegresar}
-                          >
-                            Modificar
-                          </Button>
-                          <Button
-                            variant="contained"
-                            color="error"
-                            size="small"
-                            sx={{ ml: 2 }}
-                            onClick={handleClickRegresar}
-                          >
-                            Eliminar
-                          </Button>
                         </TableCell>
                       </TableRow>
-                    ))}
+                    )}
                   </TableBody>
                 </Table>
               </Paper>
