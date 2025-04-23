@@ -42,9 +42,23 @@ const IndexDetalle = () => {
 
   const [tableDetalle, setTableDetalle] = useState([]);
   const [tablePacking, setTablePacking] = useState([]);
+
+  const [nroDespacho, setNroDespacho] = useState("");
+  const [nroRefer, setNroRefer] = useState("");
+  const [fecha, setFecha] = useState("");
+  const [proveedor, setProveedor] = useState("");
   useEffect(() => {
     const fetchData = async () => {
       try {
+        let responseImp = await fetch(
+          `${ip}:${port}/importaciones/getImport/${id}`
+        );
+        let dataImp = await responseImp.json();
+        setNroDespacho(dataImp.nroDespacho);
+        setNroRefer(dataImp.refCliente);
+        setFecha(dataImp.fechaETA);
+        setProveedor(dataImp.proveedor);
+
         let response = await fetch(
           `${ip}:${port}/importaciones/listGastosAgencia/${id}`
         );
@@ -76,6 +90,62 @@ const IndexDetalle = () => {
     navigate(`/dashboard/importacion-update-detalle/${id}/${index}`);
   };
 
+  const handleClickInsertarDetalle = () => {
+    navigate(`/dashboard/importacion-insert-detalle/${id}`);
+  };
+
+  const handleClickEliminarDetalle = async (index) => {
+    Swal.fire({
+      title: "¿Está seguro?",
+      text: "¿Desea eliminar este detalle?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Sí, eliminar",
+      cancelButtonText: "Cancelar",
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        let data = {
+          idImportacion: id,
+          index: index,
+        };
+        let response = await fetch(
+          `${ip}:${port}/importaciones/deleteDetalles`,
+          {
+            method: "POST",
+            mode: "cors",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(data),
+          }
+        );
+
+        let response2 = await fetch(
+          `${ip}:${port}/importaciones/listAdicionales/${id}`
+        );
+        let data2 = await response2.json();
+        setTableDetalle(JSON.parse(data2.detalles));
+
+        Swal.fire("Eliminado", "El detalle ha sido eliminado", "success");
+      }
+    });
+  };
+
+  const handleClickDownloadPdf = async () => {
+    const datafetch = await fetch(
+      `${ip}:${port}/importaciones/getImportacion/${id}`,
+      {
+        method: "GET",
+        mode: "cors",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    const datafetch2 = await datafetch.json();
+    window.open(`${ip}:${port}/pdfs/${datafetch2.nombreArchivo}`, "_blank");
+  };
+
   return (
     <Container maxWidth="lg">
       <Box
@@ -88,9 +158,26 @@ const IndexDetalle = () => {
           mb: 2,
         }}
       >
-        <Typography variant="h5" gutterBottom>
-          Detalles Importacion
+        <Typography variant="h6" gutterBottom>
+          Importación{" "}
+          {nroDespacho +
+            " - Referencia " +
+            nroRefer +
+            " - Fecha " +
+            fecha +
+            " - " +
+            proveedor}
         </Typography>
+        <Button
+          variant="contained"
+          color="info"
+          size="small"
+          sx={{ ml: 2, mb: 1 }}
+          onClick={handleClickDownloadPdf}
+        >
+          pdf original
+        </Button>
+
         <Box
           sx={{
             p: 4,
@@ -255,7 +342,7 @@ const IndexDetalle = () => {
                 color="info"
                 size="small"
                 sx={{ ml: 2, mb: 1 }}
-                onClick={handleClickRegresar}
+                onClick={handleClickInsertarDetalle}
               >
                 +
               </Button>
@@ -297,30 +384,26 @@ const IndexDetalle = () => {
                         </TableCell>
 
                         <TableCell>
-                          {e.codigoInvalido && (
-                            <>
-                              <Button
-                                variant="contained"
-                                color="secondary"
-                                size="small"
-                                sx={{ mt: 0 }}
-                                onClick={() =>
-                                  handleClickModificaDetalle(index)
-                                }
-                              >
-                                Modificar
-                              </Button>
-                              <Button
-                                variant="contained"
-                                color="error"
-                                size="small"
-                                sx={{ ml: 2 }}
-                                onClick={handleClickRegresar}
-                              >
-                                Eliminar
-                              </Button>
-                            </>
-                          )}
+                          <>
+                            <Button
+                              variant="contained"
+                              color="secondary"
+                              size="small"
+                              sx={{ mt: 0 }}
+                              onClick={() => handleClickModificaDetalle(index)}
+                            >
+                              Modificar
+                            </Button>
+                            <Button
+                              variant="contained"
+                              color="error"
+                              size="small"
+                              sx={{ ml: 2 }}
+                              onClick={() => handleClickEliminarDetalle(index)}
+                            >
+                              Eliminar
+                            </Button>
+                          </>
                         </TableCell>
                       </TableRow>
                     ))}
