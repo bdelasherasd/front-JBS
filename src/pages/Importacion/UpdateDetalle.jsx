@@ -14,6 +14,7 @@ import {
   TextField,
   List,
   Modal,
+  Autocomplete,
 } from "@mui/material";
 import { Formik } from "formik";
 import * as Yup from "yup";
@@ -166,29 +167,35 @@ const UpdateDetalle = () => {
             touched,
             handleBlur,
             isSubmitting,
+            setFieldValue,
           }) => (
             <Box onSubmit={handleSubmit} component="form" sx={{ mt: 1 }}>
-              <TextField
-                select
-                placeholder="Seleccione Codigo"
-                value={values.codigo}
-                onChange={handleChange}
-                name="codigo"
-                onBlur={handleBlur}
-                id="codigo"
-                label="Seleccione Codigo"
-                fullWidth
-                sx={{ mb: 3 }}
-                error={errors.codigo && touched.codigo}
-                helperText={errors.codigo && touched.codigo && errors.codigo}
-              >
-                {listcodigos.map((option) => (
-                  <MenuItem key={option.id} value={option.codigo}>
-                    {option.codigo + " "}
-                    {option.producto}
-                  </MenuItem>
-                ))}
-              </TextField>
+              <Autocomplete
+                options={listcodigos}
+                getOptionLabel={(option) =>
+                  `${option.codigo} ${option.producto}`
+                }
+                value={
+                  listcodigos.find((item) => item.codigo === values.codigo) ||
+                  null
+                }
+                onChange={(event, newValue) => {
+                  setFieldValue("codigo", newValue ? newValue.codigo : "");
+                }}
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    label="Seleccione Codigo"
+                    placeholder="Seleccione Codigo"
+                    fullWidth
+                    sx={{ mb: 3 }}
+                    error={errors.codigo && touched.codigo}
+                    helperText={
+                      errors.codigo && touched.codigo && errors.codigo
+                    }
+                  />
+                )}
+              />
 
               <TextField
                 type="text"

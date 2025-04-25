@@ -8,7 +8,7 @@ import { Box, Avatar, Typography, TextField, Button } from "@mui/material";
 import AddAPhotoIcon from "@mui/icons-material/AddAPhoto";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import Swal from "sweetalert2";
-import logo from "../assets/jbs-s-a-1.svg";
+import logo from "../assets/JBS nuevo.png";
 
 const Recover = () => {
   let [email, setEmail] = useState("");

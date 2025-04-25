@@ -5,7 +5,7 @@ import { Formik } from "formik";
 import * as Yup from "yup";
 import { Box, Avatar, Typography, TextField, Button } from "@mui/material";
 import AddAPhotoIcon from "@mui/icons-material/AddAPhoto";
-import logo from "../assets/jbs-s-a-1.svg";
+import logo from "../assets/JBS nuevo.png";
 
 import { login } from "../config/firebase";
 const urlBackend = import.meta.env.VITE_URL_BACKEND;

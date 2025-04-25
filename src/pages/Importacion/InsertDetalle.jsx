@@ -14,6 +14,7 @@ import {
   TextField,
   List,
   Modal,
+  Autocomplete,
 } from "@mui/material";
 import { Formik } from "formik";
 import * as Yup from "yup";
@@ -33,6 +34,21 @@ const InsertDetalle = () => {
 
   useEffect(() => {
     const fetchData = async () => {
+      const datafetch = await fetch(
+        `${ip}:${port}/importaciones/getImportacion/${idImportacion}`,
+        {
+          method: "GET",
+          mode: "cors",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      let dataResponse = await datafetch.json();
+      setCodigo("");
+      setCantidad("");
+      setValor("");
+
       const datafetchlist = await fetch(
         `${ip}:${port}/importaciones/listCodigos/${idImportacion}`,
         {
@@ -59,15 +75,15 @@ const InsertDetalle = () => {
   const validationSchema = Yup.object().shape({
     codigo: Yup.string()
       .trim()
-      .min(1, "Minimo 1 caracteres")
+      .min(2, "Minimo 2 caracteres")
       .required("Campo requerido"),
     cantidad: Yup.string()
       .trim()
-      .min(1, "Minimo 1 caracteres")
+      .min(2, "Minimo 2 caracteres")
       .required("Campo requerido"),
     valor: Yup.string()
       .trim()
-      .min(1, "Minimo 1 caracteres")
+      .min(2, "Minimo 2 caracteres")
       .required("Campo requerido"),
   });
 
@@ -93,7 +109,7 @@ const InsertDetalle = () => {
       let dataResponse = await response.json();
       await Swal.fire({
         icon: "success",
-        title: "Detalle Registrado",
+        title: "Detalle Actualizado",
         showConfirmButton: false,
         timer: 1500,
       });
@@ -147,29 +163,35 @@ const InsertDetalle = () => {
             touched,
             handleBlur,
             isSubmitting,
+            setFieldValue,
           }) => (
             <Box onSubmit={handleSubmit} component="form" sx={{ mt: 1 }}>
-              <TextField
-                select
-                placeholder="Seleccione Codigo"
-                value={values.codigo}
-                onChange={handleChange}
-                name="codigo"
-                onBlur={handleBlur}
-                id="codigo"
-                label="Seleccione Codigo"
-                fullWidth
-                sx={{ mb: 3 }}
-                error={errors.codigo && touched.codigo}
-                helperText={errors.codigo && touched.codigo && errors.codigo}
-              >
-                {listcodigos.map((option) => (
-                  <MenuItem key={option.id} value={option.codigo}>
-                    {option.codigo + " "}
-                    {option.producto}
-                  </MenuItem>
-                ))}
-              </TextField>
+              <Autocomplete
+                options={listcodigos}
+                getOptionLabel={(option) =>
+                  `${option.codigo} ${option.producto}`
+                }
+                value={
+                  listcodigos.find((item) => item.codigo === values.codigo) ||
+                  null
+                }
+                onChange={(event, newValue) => {
+                  setFieldValue("codigo", newValue ? newValue.codigo : "");
+                }}
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    label="Seleccione Codigo"
+                    placeholder="Seleccione Codigo"
+                    fullWidth
+                    sx={{ mb: 3 }}
+                    error={errors.codigo && touched.codigo}
+                    helperText={
+                      errors.codigo && touched.codigo && errors.codigo
+                    }
+                  />
+                )}
+              />
 
               <TextField
                 type="text"

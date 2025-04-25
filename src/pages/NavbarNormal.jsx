@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { useUserContext } from "../context/UserContext";
 import { logout } from "../config/firebase";
-import logo from "../assets/jbs-s-a-1.svg";
+import logo from "../assets/JBS nuevo.png";
 
 const NavbarNormal = () => {
   const [menuOpen, setMenuOpen] = useState(false);
