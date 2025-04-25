@@ -131,6 +131,16 @@ const IndexDetalle = () => {
     });
   };
 
+  const handleClickUpdatePackingList = (index) => {
+    navigate(`/dashboard/importacion-update-packing-list/${id}/${index}`);
+  };
+
+  const handleClickInsertPackingList = () => {
+    navigate(`/dashboard/importacion-insert-packing-list/${id}`);
+  };
+
+  const handleClickDeletePackingList = async (index) => {};
+
   const handleClickDownloadPdf = async () => {
     const datafetch = await fetch(
       `${ip}:${port}/importaciones/getImportacion/${id}`,
@@ -453,7 +463,7 @@ const IndexDetalle = () => {
                 color="info"
                 size="small"
                 sx={{ ml: 2, mb: 1 }}
-                onClick={handleClickRegresar}
+                onClick={handleClickInsertPackingList}
               >
                 +
               </Button>
@@ -518,7 +528,9 @@ const IndexDetalle = () => {
                               color="secondary"
                               size="small"
                               sx={{ mt: 0 }}
-                              onClick={handleClickRegresar}
+                              onClick={() =>
+                                handleClickUpdatePackingList(index)
+                              }
                             >
                               Modificar
                             </Button>
@@ -527,7 +539,7 @@ const IndexDetalle = () => {
                               color="error"
                               size="small"
                               sx={{ ml: 2 }}
-                              onClick={handleClickRegresar}
+                              onClick={handleClickDeletePackingList}
                             >
                               Eliminar
                             </Button>

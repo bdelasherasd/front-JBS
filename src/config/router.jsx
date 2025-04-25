@@ -30,6 +30,9 @@ import ImportacionDetalle from "../pages/Importacion/IndexDetalle";
 import ImportacionUpdateDetalle from "../pages/Importacion/UpdateDetalle";
 import ImportacionInsertDetalle from "../pages/Importacion/InsertDetalle";
 
+import ImportacionUpdatePackingList from "../pages/Importacion/UpdatePackingList";
+import ImportacionInsertPackingList from "../pages/Importacion/InsertPackingList";
+
 export const router = createBrowserRouter([
   {
     path: "/",
@@ -75,6 +78,16 @@ export const router = createBrowserRouter([
           {
             path: "importacion-insert-detalle/:idImportacion",
             element: <ImportacionInsertDetalle />,
+          },
+
+          {
+            path: "importacion-update-packing-list/:idImportacion/:index",
+            element: <ImportacionUpdatePackingList />,
+          },
+
+          {
+            path: "importacion-insert-packing-list/:idImportacion",
+            element: <ImportacionInsertPackingList />,
           },
 
           {
