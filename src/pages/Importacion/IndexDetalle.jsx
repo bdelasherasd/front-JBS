@@ -139,7 +139,42 @@ const IndexDetalle = () => {
     navigate(`/dashboard/importacion-insert-packing-list/${id}`);
   };
 
-  const handleClickDeletePackingList = async (index) => {};
+  const handleClickDeletePackingList = async (index) => {
+    Swal.fire({
+      title: "¿Está seguro?",
+      text: "¿Desea eliminar este detalle de Packing List?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Sí, eliminar",
+      cancelButtonText: "Cancelar",
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        let data = {
+          idImportacion: id,
+          index: index,
+        };
+        let response = await fetch(
+          `${ip}:${port}/importaciones/deletePackingList`,
+          {
+            method: "POST",
+            mode: "cors",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(data),
+          }
+        );
+
+        let response2 = await fetch(
+          `${ip}:${port}/importaciones/listAdicionales/${id}`
+        );
+        let data2 = await response2.json();
+        setTablePacking(JSON.parse(data2.packingList || "[]"));
+
+        Swal.fire("Eliminado", "El detalle ha sido eliminado", "success");
+      }
+    });
+  };
 
   const handleClickDownloadPdf = async () => {
     const datafetch = await fetch(
@@ -405,13 +440,25 @@ const IndexDetalle = () => {
                             </Typography>
                           </TableCell>
                           <TableCell>
-                            <Typography variant="caption">
+                            <Typography
+                              variant="caption"
+                              sx={{
+                                color: e.cantidadInvalida ? "red" : "inherit",
+                              }}
+                            >
                               {e.cantidad}
                             </Typography>
                           </TableCell>
 
                           <TableCell>
-                            <Typography variant="caption">{e.valor}</Typography>
+                            <Typography
+                              variant="caption"
+                              sx={{
+                                color: e.valorInvalido ? "red" : "inherit",
+                              }}
+                            >
+                              {e.valor}
+                            </Typography>
                           </TableCell>
 
                           <TableCell>
@@ -499,7 +546,14 @@ const IndexDetalle = () => {
                           </TableCell>
 
                           <TableCell>
-                            <Typography variant="caption">
+                            <Typography
+                              variant="caption"
+                              sx={{
+                                color: e.vencimientoInvalido
+                                  ? "red"
+                                  : "inherit",
+                              }}
+                            >
                               {e.fechaVencimiento}
                             </Typography>
                           </TableCell>
@@ -511,13 +565,23 @@ const IndexDetalle = () => {
                           </TableCell>
 
                           <TableCell>
-                            <Typography variant="caption">
+                            <Typography
+                              variant="caption"
+                              sx={{
+                                color: e.pesonetoInvalido ? "red" : "inherit",
+                              }}
+                            >
                               {e.PesoNeto}
                             </Typography>
                           </TableCell>
 
                           <TableCell>
-                            <Typography variant="caption">
+                            <Typography
+                              variant="caption"
+                              sx={{
+                                color: e.pesobrutoInvalido ? "red" : "inherit",
+                              }}
+                            >
                               {e.PesoBruto}
                             </Typography>
                           </TableCell>
@@ -539,7 +603,9 @@ const IndexDetalle = () => {
                               color="error"
                               size="small"
                               sx={{ ml: 2 }}
-                              onClick={handleClickDeletePackingList}
+                              onClick={() =>
+                                handleClickDeletePackingList(index)
+                              }
                             >
                               Eliminar
                             </Button>

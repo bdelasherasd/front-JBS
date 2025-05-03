@@ -27,89 +27,68 @@ const InsertPackingList = () => {
   const ip = url[0] + ":" + url[1];
   const port = 3000;
 
-  let [codigo, setCodigo] = useState("");
-  let [cantidad, setCantidad] = useState("");
-  let [valor, setValor] = useState("");
-  let [listcodigos, setListCodigos] = useState([]);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      const datafetch = await fetch(
-        `${ip}:${port}/importaciones/getImportacion/${idImportacion}`,
-        {
-          method: "GET",
-          mode: "cors",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
-      let dataResponse = await datafetch.json();
-      setCodigo("");
-      setCantidad("");
-      setValor("");
-
-      const datafetchlist = await fetch(
-        `${ip}:${port}/importaciones/listCodigos/${idImportacion}`,
-        {
-          method: "GET",
-          mode: "cors",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
-      let listaCodigos = await datafetchlist.json();
-      setListCodigos(
-        listaCodigos.map((e) => ({
-          id: e.sku,
-          codigo: e.sku,
-          producto: e.producto,
-        }))
-      );
-    };
-
-    fetchData();
-  }, []);
+  let [descripcion, setDescripcion] = useState("");
+  let [sif, setSif] = useState("");
+  let [vencimiento, setVencimiento] = useState("");
+  let [cajas, setCajas] = useState("");
+  let [pesoneto, setPesoneto] = useState("");
+  let [pesobruto, setPesobruto] = useState("");
 
   const validationSchema = Yup.object().shape({
-    codigo: Yup.string()
+    descripcion: Yup.string()
       .trim()
       .min(2, "Minimo 2 caracteres")
       .required("Campo requerido"),
-    cantidad: Yup.string()
-      .trim()
-      .min(2, "Minimo 2 caracteres")
+    sif: Yup.number()
+      .typeError("El campo debe ser un número")
       .required("Campo requerido"),
-    valor: Yup.string()
-      .trim()
-      .min(2, "Minimo 2 caracteres")
+    vencimiento: Yup.date()
+      .typeError("El campo debe ser una fecha")
+      .required("Campo requerido"),
+    cajas: Yup.number()
+      .typeError("El campo debe ser un número")
+      .required("Campo requerido"),
+    pesoneto: Yup.number()
+      .typeError("El campo debe ser un número")
+      .required("Campo requerido"),
+    pesobruto: Yup.number()
+      .typeError("El campo debe ser un número")
       .required("Campo requerido"),
   });
 
   const onSubmit = async (
-    { codigo, cantidad, valor },
+    { descripcion, sif, vencimiento, cajas, pesoneto, pesobruto },
     { setSubmitting, setErrors, resetForm }
   ) => {
+    if (!fechaValida(vencimiento)) {
+      return setErrors({ vencimiento: "Fecha no válida" });
+    }
+
     let data = {
       idImportacion: idImportacion,
-      codigo: codigo,
-      cantidad: cantidad,
-      valor: valor,
+      descripcion: descripcion,
+      sif: sif,
+      fechaVencimiento: vencimiento,
+      CajasPallet: cajas,
+      PesoNeto: pesoneto,
+      PesoBruto: pesobruto,
     };
     try {
-      let response = await fetch(`${ip}:${port}/importaciones/insertDetalles`, {
-        method: "POST",
-        mode: "cors",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data),
-      });
+      let response = await fetch(
+        `${ip}:${port}/importaciones/insertPackingList`,
+        {
+          method: "POST",
+          mode: "cors",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(data),
+        }
+      );
       let dataResponse = await response.json();
       await Swal.fire({
         icon: "success",
-        title: "Detalle Actualizado",
+        title: "Detalle Agregado",
         showConfirmButton: false,
         timer: 1500,
       });
@@ -122,6 +101,20 @@ const InsertPackingList = () => {
     } finally {
       setSubmitting(false);
     }
+  };
+
+  const fechaValida = (fecha) => {
+    const regex = /^\d{4}\/\d{2}\/\d{2}$/;
+    if (!regex.test(fecha)) return false;
+
+    const [year, month, day] = fecha.split("/").map(Number);
+    const date = new Date(year, month - 1, day);
+
+    return (
+      date.getFullYear() === year &&
+      date.getMonth() === month - 1 &&
+      date.getDate() === day
+    );
   };
 
   const navigate = useNavigate();
@@ -141,15 +134,18 @@ const InsertPackingList = () => {
           mt: 5,
         }}
       >
-        <Typography variant="h5" gutterBottom>
+        <Typography variant="h5" gutterBottom sx={{ mb: 3 }}>
           Agrega Detalles Importacion
         </Typography>
 
         <Formik
           initialValues={{
-            codigo: codigo,
-            cantidad: cantidad,
-            valor: valor,
+            descripcion: descripcion,
+            sif: sif,
+            vencimiento: vencimiento,
+            cajas: cajas,
+            pesoneto: pesoneto,
+            pesobruto: pesobruto,
           }}
           onSubmit={onSubmit}
           validationSchema={validationSchema}
@@ -166,63 +162,105 @@ const InsertPackingList = () => {
             setFieldValue,
           }) => (
             <Box onSubmit={handleSubmit} component="form" sx={{ mt: 1 }}>
-              <Autocomplete
-                options={listcodigos}
-                getOptionLabel={(option) =>
-                  `${option.codigo} ${option.producto}`
-                }
-                value={
-                  listcodigos.find((item) => item.codigo === values.codigo) ||
-                  null
-                }
-                onChange={(event, newValue) => {
-                  setFieldValue("codigo", newValue ? newValue.codigo : "");
-                }}
-                renderInput={(params) => (
-                  <TextField
-                    {...params}
-                    label="Seleccione Codigo"
-                    placeholder="Seleccione Codigo"
-                    fullWidth
-                    sx={{ mb: 3 }}
-                    error={errors.codigo && touched.codigo}
-                    helperText={
-                      errors.codigo && touched.codigo && errors.codigo
-                    }
-                  />
-                )}
-              />
-
               <TextField
                 type="text"
-                placeholder="Ingrese Cantidad"
-                value={values.cantidad}
+                placeholder="Ingrese Descripcion"
+                value={values.descripcion}
                 onChange={handleChange}
-                name="cantidad"
+                name="descripcion"
                 onBlur={handleBlur}
-                id="cantidad"
-                label="Ingrese Cantidad"
+                id="descripcion"
+                label="Ingrese Descripcion"
                 fullWidth
                 sx={{ mb: 3 }}
-                error={errors.cantidad && touched.cantidad}
+                error={errors.descripcion && touched.descripcion}
                 helperText={
-                  errors.cantidad && touched.cantidad && errors.cantidad
+                  errors.descripcion &&
+                  touched.descripcion &&
+                  errors.descripcion
                 }
               />
 
               <TextField
                 type="text"
-                placeholder="Ingrese Valor"
-                value={values.valor}
+                placeholder="Ingrese SIF"
+                value={values.sif}
                 onChange={handleChange}
-                name="valor"
+                name="sif"
                 onBlur={handleBlur}
-                id="valor"
-                label="Ingrese Valor"
+                id="sif"
+                label="Ingrese SIF"
                 fullWidth
                 sx={{ mb: 3 }}
-                error={errors.valor && touched.valor}
-                helperText={errors.valor && touched.valor && errors.valor}
+                error={errors.sif && touched.sif}
+                helperText={errors.sif && touched.sif && errors.sif}
+              />
+
+              <TextField
+                type="text"
+                placeholder="Ingrese Vencimiento"
+                value={values.vencimiento}
+                onChange={handleChange}
+                name="vencimiento"
+                onBlur={handleBlur}
+                id="vencimiento"
+                label="Ingrese Vencimiento"
+                fullWidth
+                sx={{ mb: 3 }}
+                error={errors.vencimiento && touched.vencimiento}
+                helperText={
+                  errors.vencimiento &&
+                  touched.vencimiento &&
+                  errors.vencimiento
+                }
+              />
+
+              <TextField
+                type="text"
+                placeholder="Ingrese Cajas Pallet"
+                value={values.cajas}
+                onChange={handleChange}
+                name="cajas"
+                onBlur={handleBlur}
+                id="cajas"
+                label="Ingrese Cajas Pallet"
+                fullWidth
+                sx={{ mb: 3 }}
+                error={errors.cajas && touched.cajas}
+                helperText={errors.cajas && touched.cajas && errors.cajas}
+              />
+
+              <TextField
+                type="text"
+                placeholder="Ingrese Peso Neto"
+                value={values.pesoneto}
+                onChange={handleChange}
+                name="pesoneto"
+                onBlur={handleBlur}
+                id="pesoneto"
+                label="Ingrese Peso Neto"
+                fullWidth
+                sx={{ mb: 3 }}
+                error={errors.pesoneto && touched.pesoneto}
+                helperText={
+                  errors.pesoneto && touched.pesoneto && errors.pesoneto
+                }
+              />
+              <TextField
+                type="text"
+                placeholder="Ingrese Peso Bruto"
+                value={values.pesobruto}
+                onChange={handleChange}
+                name="pesobruto"
+                onBlur={handleBlur}
+                id="pesobruto"
+                label="Ingrese Peso Bruto"
+                fullWidth
+                sx={{ mb: 3 }}
+                error={errors.pesobruto && touched.pesobruto}
+                helperText={
+                  errors.pesobruto && touched.pesobruto && errors.pesobruto
+                }
               />
 
               <Button
