@@ -17,6 +17,20 @@ const ListImportaciones = () => {
     { field: "proveedor", headerName: "Proveedor", width: 200 },
     { field: "refCliente", headerName: "Referencia", width: 100 },
     {
+      field: "valido",
+      headerName: "Estado",
+      width: 100,
+      renderCell: (params) => (
+        <span
+          style={{
+            color: params.value === "Con Errores" ? "red" : "inherit",
+          }}
+        >
+          {params.value}
+        </span>
+      ),
+    },
+    {
       field: "actions",
       headerName: "Acciones",
       width: 100,
@@ -53,6 +67,7 @@ const ListImportaciones = () => {
             tipoTransporte: e.tipoTranporte,
             proveedor: e.proveedor,
             refCliente: e.refCliente,
+            valido: e.valido ? "Valido" : "Con Errores",
           }))
         );
       })

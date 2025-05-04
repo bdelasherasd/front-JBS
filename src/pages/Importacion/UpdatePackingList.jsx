@@ -87,8 +87,15 @@ const UpdatePackingList = () => {
     { descripcion, sif, vencimiento, cajas, pesoneto, pesobruto },
     { setSubmitting, setErrors, resetForm }
   ) => {
-    if (!fechaValida(vencimiento)) {
-      return setErrors({ vencimiento: "Fecha no válida" });
+    let fechaInvalida = !fechaValida(vencimiento);
+    let hayErrores = false;
+
+    if (fechaInvalida) {
+      setErrors({ vencimiento: "Fecha no válida" });
+      hayErrores = true;
+    }
+    if (hayErrores) {
+      return;
     }
 
     let data = {
@@ -143,6 +150,18 @@ const UpdatePackingList = () => {
       date.getMonth() === month - 1 &&
       date.getDate() === day
     );
+  };
+
+  const valCantidad = async (cantidad) => {
+    if (isNaN(cantidad) || cantidad <= 0) {
+      return true;
+    } else {
+      if (cantidad.includes(",")) {
+        return true;
+      } else {
+        return false;
+      }
+    }
   };
 
   const navigate = useNavigate();

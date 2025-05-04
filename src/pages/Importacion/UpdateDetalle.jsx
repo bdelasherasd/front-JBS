@@ -80,20 +80,30 @@ const UpdateDetalle = () => {
       .trim()
       .min(2, "Minimo 2 caracteres")
       .required("Campo requerido"),
-    cantidad: Yup.string()
-      .trim()
-      .min(2, "Minimo 2 caracteres")
-      .required("Campo requerido"),
-    valor: Yup.string()
-      .trim()
-      .min(2, "Minimo 2 caracteres")
-      .required("Campo requerido"),
+    cantidad: Yup.number()
+      .typeError("El campo debe ser un número")
+      .required("Campo requerido")
+      .min(0, "La cantidad no puede ser menor a 0"),
+    valor: Yup.number()
+      .typeError("El campo debe ser un número")
+      .required("Campo requerido")
+      .min(0, "El valor no puede ser menor a 0"),
   });
 
   const onSubmit = async (
     { codigo, cantidad, valor },
     { setSubmitting, setErrors, resetForm }
   ) => {
+    let cantidadInvalida = await valCantidad(cantidad);
+    let valorInvalido = await valCantidad(valor);
+
+    if (cantidadInvalida) {
+      return setErrors({ cantidad: "Cantidad invalida" });
+    }
+    if (valorInvalido) {
+      return setErrors({ valor: "Valor invalido" });
+    }
+
     let data = {
       idImportacion: idImportacion,
       index: indice,
@@ -132,6 +142,18 @@ const UpdateDetalle = () => {
 
   const handleClickRegresar = () => {
     navigate(`/dashboard/importacion-detalle/${idImportacion}`);
+  };
+
+  const valCantidad = async (cantidad) => {
+    if (isNaN(cantidad) || cantidad <= 0) {
+      return true;
+    } else {
+      if (cantidad.includes(",")) {
+        return true;
+      } else {
+        return false;
+      }
+    }
   };
 
   return (
