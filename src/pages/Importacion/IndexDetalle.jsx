@@ -223,6 +223,16 @@ const IndexDetalle = () => {
           pdf original
         </Button>
 
+        <Button
+          variant="contained"
+          color="secondary"
+          sx={{ ml: 2, mb: 1 }}
+          onClick={handleClickRegresar}
+          size="small"
+        >
+          Regresar
+        </Button>
+
         <Box
           sx={{
             p: 4,
@@ -422,6 +432,7 @@ const IndexDetalle = () => {
                       <TableCell>Codigo</TableCell>
                       <TableCell>Cantidad</TableCell>
                       <TableCell>Valor</TableCell>
+                      <TableCell>Peso</TableCell>
                       <TableCell></TableCell>
                     </TableRow>
                   </TableHead>
@@ -458,6 +469,17 @@ const IndexDetalle = () => {
                               }}
                             >
                               {e.valor}
+                            </Typography>
+                          </TableCell>
+
+                          <TableCell>
+                            <Typography
+                              variant="caption"
+                              sx={{
+                                color: e.peso == "0" ? "red" : "inherit",
+                              }}
+                            >
+                              {e.peso}
                             </Typography>
                           </TableCell>
 
@@ -627,15 +649,6 @@ const IndexDetalle = () => {
             </Box>
           </Box>
         </Box>
-
-        <Button
-          variant="contained"
-          color="secondary"
-          sx={{ mt: 2 }}
-          onClick={handleClickRegresar}
-        >
-          Regresar
-        </Button>
       </Box>
     </Container>
   );

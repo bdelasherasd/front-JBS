@@ -30,6 +30,7 @@ const InsertDetalle = () => {
   let [codigo, setCodigo] = useState("");
   let [cantidad, setCantidad] = useState("");
   let [valor, setValor] = useState("");
+  let [peso, setPeso] = useState("");
   let [listcodigos, setListCodigos] = useState([]);
 
   useEffect(() => {
@@ -48,6 +49,7 @@ const InsertDetalle = () => {
       setCodigo("");
       setCantidad("");
       setValor("");
+      setPeso("");
 
       const datafetchlist = await fetch(
         `${ip}:${port}/importaciones/listCodigos/${idImportacion}`,
@@ -85,10 +87,14 @@ const InsertDetalle = () => {
       .typeError("El campo debe ser un número")
       .required("Campo requerido")
       .min(0, "El valor no puede ser menor a 0"),
+    peso: Yup.number()
+      .typeError("El campo debe ser un número")
+      .required("Campo requerido")
+      .min(0, "El valor no puede ser menor a 0"),
   });
 
   const onSubmit = async (
-    { codigo, cantidad, valor },
+    { codigo, cantidad, valor, peso },
     { setSubmitting, setErrors, resetForm }
   ) => {
     let cantidadInvalida = await valCantidad(cantidad);
@@ -106,6 +112,7 @@ const InsertDetalle = () => {
       codigo: codigo,
       cantidad: cantidad,
       valor: valor,
+      peso: peso,
     };
     try {
       let response = await fetch(`${ip}:${port}/importaciones/insertDetalles`, {
@@ -163,7 +170,7 @@ const InsertDetalle = () => {
           mt: 5,
         }}
       >
-        <Typography variant="h5" gutterBottom>
+        <Typography variant="h5" gutterBottom sx={{ mb: 2 }}>
           Agrega Detalles Importacion
         </Typography>
 
@@ -245,6 +252,21 @@ const InsertDetalle = () => {
                 sx={{ mb: 3 }}
                 error={errors.valor && touched.valor}
                 helperText={errors.valor && touched.valor && errors.valor}
+              />
+
+              <TextField
+                type="text"
+                placeholder="Ingrese Peso"
+                value={values.peso}
+                onChange={handleChange}
+                name="peso"
+                onBlur={handleBlur}
+                id="peso"
+                label="Ingrese Peso"
+                fullWidth
+                sx={{ mb: 3 }}
+                error={errors.peso && touched.peso}
+                helperText={errors.peso && touched.peso && errors.peso}
               />
 
               <Button
