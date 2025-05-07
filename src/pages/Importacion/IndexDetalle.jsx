@@ -559,12 +559,14 @@ const IndexDetalle = () => {
                         <TableRow key={index}>
                           <TableCell>
                             <Typography variant="caption">
-                              {e.descripcion.substring(0, 20)}
+                              {e.descripcion.substring(0, 15)}
                             </Typography>
                           </TableCell>
 
                           <TableCell>
-                            <Typography variant="caption">{e.sif}</Typography>
+                            <Typography variant="caption">
+                              {e.sif.substring(0, 15)}
+                            </Typography>
                           </TableCell>
 
                           <TableCell>
@@ -582,7 +584,7 @@ const IndexDetalle = () => {
 
                           <TableCell>
                             <Typography variant="caption">
-                              {e.CajasPallet}
+                              {e.CajasPallet.substring(0, 15)}
                             </Typography>
                           </TableCell>
 
@@ -593,7 +595,7 @@ const IndexDetalle = () => {
                                 color: e.pesonetoInvalido ? "red" : "inherit",
                               }}
                             >
-                              {e.PesoNeto}
+                              {e.PesoNeto.substring(0, 15)}
                             </Typography>
                           </TableCell>
 
@@ -604,7 +606,7 @@ const IndexDetalle = () => {
                                 color: e.pesobrutoInvalido ? "red" : "inherit",
                               }}
                             >
-                              {e.PesoBruto}
+                              {e.PesoBruto.substring(0, 15)}
                             </Typography>
                           </TableCell>
 
