@@ -33,6 +33,8 @@ import ImportacionInsertDetalle from "../pages/Importacion/InsertDetalle";
 import ImportacionUpdatePackingList from "../pages/Importacion/UpdatePackingList";
 import ImportacionInsertPackingList from "../pages/Importacion/InsertPackingList";
 
+import InformeCostosAduanaIndex from "../pages/InformeCostosAduana/Index";
+
 export const router = createBrowserRouter([
   {
     path: "/",
@@ -88,6 +90,11 @@ export const router = createBrowserRouter([
           {
             path: "importacion-insert-packing-list/:idImportacion",
             element: <ImportacionInsertPackingList />,
+          },
+
+          {
+            path: "informeCostosAduana",
+            element: <InformeCostosAduanaIndex />,
           },
 
           {
