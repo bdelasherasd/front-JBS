@@ -8,6 +8,12 @@ const urlBackend = import.meta.env.VITE_URL_BACKEND;
 
 const ListImportaciones = () => {
   const [tableData, setTableData] = useState([]);
+  const [paginationModel, setPaginationModel] = useState(() => {
+    // Restaurar la página desde localStorage o usar la página 0 por defecto
+    const savedPage = localStorage.getItem("importacionesPage");
+    return { page: savedPage ? parseInt(savedPage, 10) : 0, pageSize: 10 };
+  });
+
   const navigate = useNavigate();
 
   const columns = [
@@ -74,6 +80,11 @@ const ListImportaciones = () => {
       .catch((error) => console.error("Error:", error));
   }, []);
 
+  const handlePaginationChange = (model) => {
+    setPaginationModel(model);
+    localStorage.setItem("importacionesPage", model.page); // Guardar la página actual
+  };
+
   return (
     <Box sx={{ width: "90%", mx: "auto", bgcolor: "grey.200", p: 2 }}>
       <Button
@@ -89,12 +100,14 @@ const ListImportaciones = () => {
         columns={columns}
         density="compact"
         autoHeight
+        paginationModel={paginationModel} // Vincular el modelo de paginación
+        onPaginationModelChange={handlePaginationChange} // Manejar cambios de paginación
         initialState={{
           pagination: {
             paginationModel: { pageSize: 10 },
           },
         }}
-        pageSizeOptions={[10, 20, 50]}
+        pageSizeOptions={[10, 20]}
         localeText={esES.components.MuiDataGrid.defaultProps.localeText}
         sx={{
           minWidth: "100%",
