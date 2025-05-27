@@ -64,6 +64,7 @@ const NavbarNormal = () => {
 
   const handleClickImportacion = () => {
     //setAnchorEl(null);
+    localStorage.setItem("importacionesPage", 0);
     navigate("/dashboard/importacion");
   };
 

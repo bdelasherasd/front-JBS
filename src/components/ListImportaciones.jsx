@@ -18,13 +18,13 @@ const ListImportaciones = () => {
 
   const columns = [
     { field: "id", headerName: "ID", width: 50 },
-    { field: "nroDespacho", headerName: "Despacho", width: 100 },
-    { field: "tipoTransporte", headerName: "Transporte", width: 100 },
+    { field: "nroDespacho", headerName: "Despacho", width: 90 },
+    { field: "tipoTransporte", headerName: "Transporte", width: 90 },
     { field: "proveedor", headerName: "Proveedor", width: 200 },
     { field: "refCliente", headerName: "Referencia", width: 100 },
     {
       field: "valido",
-      headerName: "Estado",
+      headerName: "Validación",
       width: 100,
       renderCell: (params) => (
         <span
@@ -36,6 +36,7 @@ const ListImportaciones = () => {
         </span>
       ),
     },
+    { field: "estado", headerName: "Estado", width: 100 },
     {
       field: "actions",
       headerName: "Acciones",
@@ -74,6 +75,7 @@ const ListImportaciones = () => {
             proveedor: e.proveedor,
             refCliente: e.refCliente,
             valido: e.valido ? "Valido" : "Con Errores",
+            estado: e.estado,
           }))
         );
       })

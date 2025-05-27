@@ -47,6 +47,8 @@ const IndexDetalle = () => {
   const [nroRefer, setNroRefer] = useState("");
   const [fecha, setFecha] = useState("");
   const [proveedor, setProveedor] = useState("");
+  const [estado, setEstado] = useState("");
+  const [valido, setValido] = useState("");
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -59,6 +61,12 @@ const IndexDetalle = () => {
         setFecha(dataImp.fechaETA);
         setProveedor(dataImp.proveedor);
 
+        if (dataImp.estado === "0") {
+          setEstado("Ingresado");
+        } else if (dataImp.estado === "1") {
+          setEstado("Aprobado");
+        }
+
         let response = await fetch(
           `${ip}:${port}/importaciones/listGastosAgencia/${id}`
         );
@@ -70,9 +78,40 @@ const IndexDetalle = () => {
         let response2 = await fetch(
           `${ip}:${port}/importaciones/listAdicionales/${id}`
         );
+        setValido(true);
         let data2 = await response2.json();
         setTableDetalle(JSON.parse(data2.detalles || "[]"));
+        let tabla = JSON.parse(data2.detalles || "[]");
+        for (let [index, detalle] of tabla.entries()) {
+          if (
+            detalle.codigoInvalido ||
+            detalle.cantidadInvalida ||
+            detalle.valorInvalido ||
+            detalle.peso === "0"
+          ) {
+            setValido(false);
+          }
+        }
+
+        if (tabla.length === 0) {
+          setValido(false);
+        }
+
         setTablePacking(JSON.parse(data2.packingList || "[]"));
+        tabla = JSON.parse(data2.packingList || "[]");
+        for (let [index, packing] of tabla.entries()) {
+          if (
+            packing.vencimientoInvalido ||
+            packing.pesonetoInvalido ||
+            packing.pesobrutoInvalido
+          ) {
+            setValido(false);
+          }
+        }
+
+        if (tabla.length === 0) {
+          setValido(false);
+        }
       } catch (error) {
         console.error("Error fetching data:", error);
         //navigate("/error");
@@ -191,6 +230,52 @@ const IndexDetalle = () => {
     window.open(`${ip}:${port}/pdfs/${datafetch2.nombreArchivo}`, "_blank");
   };
 
+  const handleClickInsertarAprobar = async () => {
+    if (!valido) {
+      Swal.fire(
+        "Error",
+        "La importación contiene errores, por favor corríjalos antes de aprobar.",
+        "error"
+      );
+      return;
+    }
+
+    Swal.fire({
+      title: "¿Está seguro?",
+      text: "¿Desea aprobar esta importación?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Sí, aprobar",
+      cancelButtonText: "Cancelar",
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        let user = sessionStorage.getItem("user");
+        let dataUser = JSON.parse(user);
+        let data = {
+          idImportacion: id,
+          usuarioAprueba: dataUser.email,
+        };
+        let response = await fetch(
+          `${ip}:${port}/importaciones/apruebaImportacion`,
+          {
+            method: "POST",
+            mode: "cors",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(data),
+          }
+        );
+
+        if (response.ok) {
+          Swal.fire("Aprobado", "La importación ha sido aprobada", "success");
+          setEstado("Aprobado");
+        } else {
+          Swal.fire("Error", "No se pudo aprobar la importación", "error");
+        }
+      }
+    });
+  };
   return (
     <Container maxWidth="lg">
       <Box
@@ -411,16 +496,33 @@ const IndexDetalle = () => {
             }}
           >
             <Box flex={1}>
+              <Box display="flex" justifyContent="flex-end">
+                <Button
+                  variant="contained"
+                  color="primary"
+                  size="small"
+                  sx={{
+                    mb: 1,
+                  }}
+                  onClick={handleClickInsertarAprobar}
+                  disabled={estado === "Aprobado"}
+                >
+                  {estado === "Ingresado" ? "Aprobar" : "Aprobado"}
+                </Button>
+              </Box>
               <Typography variant="h10">Detalle</Typography>
+
               <Button
                 variant="contained"
                 color="info"
                 size="small"
                 sx={{ ml: 2, mb: 1 }}
                 onClick={handleClickInsertarDetalle}
+                disabled={estado === "Aprobado"}
               >
                 +
               </Button>
+
               <Paper variant="outlined">
                 <Table
                   size="small"
@@ -493,6 +595,7 @@ const IndexDetalle = () => {
                                 onClick={() =>
                                   handleClickModificaDetalle(index)
                                 }
+                                disabled={estado === "Aprobado"}
                               >
                                 Modificar
                               </Button>
@@ -504,6 +607,7 @@ const IndexDetalle = () => {
                                 onClick={() =>
                                   handleClickEliminarDetalle(index)
                                 }
+                                disabled={estado === "Aprobado"}
                               >
                                 Eliminar
                               </Button>
@@ -533,6 +637,7 @@ const IndexDetalle = () => {
                 size="small"
                 sx={{ ml: 2, mb: 1 }}
                 onClick={handleClickInsertPackingList}
+                disabled={estado === "Aprobado"}
               >
                 +
               </Button>
@@ -619,6 +724,7 @@ const IndexDetalle = () => {
                               onClick={() =>
                                 handleClickUpdatePackingList(index)
                               }
+                              disabled={estado === "Aprobado"}
                             >
                               Modificar
                             </Button>
@@ -630,6 +736,7 @@ const IndexDetalle = () => {
                               onClick={() =>
                                 handleClickDeletePackingList(index)
                               }
+                              disabled={estado === "Aprobado"}
                             >
                               Eliminar
                             </Button>
