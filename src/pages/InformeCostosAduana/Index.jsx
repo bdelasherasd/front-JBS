@@ -82,12 +82,19 @@ const Index = () => {
         }
       );
       let dataResponse = await response.json();
+
+      if (dataResponse.length === 0) {
+        return Swal.fire({
+          icon: "info",
+          title: "No hay datos disponibles",
+          text: "No se encontraron registros para los filtros seleccionados.",
+        });
+      }
+
       const ws = XLSX.utils.json_to_sheet(dataResponse);
       const wb = XLSX.utils.book_new();
       XLSX.utils.book_append_sheet(wb, ws, "Aduana");
       XLSX.writeFile(wb, "Aduana.xlsx");
-
-      console.log(dataResponse);
     } catch (error) {
       return setErrors({ minuto: error.message });
     } finally {
