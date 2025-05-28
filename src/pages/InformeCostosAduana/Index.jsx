@@ -63,7 +63,11 @@ const Index = () => {
     { setSubmitting, setErrors, resetForm }
   ) => {
     if (ano < 2025) {
-      return setErrors({ hora: "Hora debe ser mayor que 2025" });
+      return swal.fire({
+        icon: "error",
+        title: "Año no válido",
+        text: "El año debe ser 2025 o posterior.",
+      });
     }
     let data = {
       ano: ano.toString(),
