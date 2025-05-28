@@ -1,5 +1,7 @@
 import { useState, useEffect } from "react";
 import { useUserContext } from "../../context/UserContext";
+import { useDevice } from "../../context/DeviceContext";
+
 import { Formik } from "formik";
 import * as Yup from "yup";
 import {
@@ -21,7 +23,12 @@ import Swal from "sweetalert2";
 import * as XLSX from "xlsx";
 
 const Index = () => {
-  let [ano, setAno] = useState(2025);
+  let [ano, setAno] = useState("");
+  let [fechaInicial, setFechaInicial] = useState("");
+  let [fechaFinal, setFechaFinal] = useState("");
+
+  const { isMobile } = useDevice();
+
   const url = window.location.href.split(":");
   const ip = url[0] + ":" + url[1];
   const port = 3000;
@@ -30,14 +37,31 @@ const Index = () => {
 
   const navigate = useNavigate();
 
+  useEffect(() => {
+    const fetchData = async () => {
+      const currentYear = new Date().getFullYear();
+      setAno(currentYear.toString());
+      const currentDate = new Date();
+      setFechaInicial(currentDate.toISOString().split("T")[0]); // Formato YYYY-MM-DD
+      setFechaFinal(currentDate.toISOString().split("T")[0]); // Formato YYYY-MM-DD
+    };
+
+    fetchData();
+  }, []);
+
   const validationSchema = Yup.object().shape({
     ano: Yup.string()
       .trim()
       .min(4, "Minimo 4 caracteres")
       .required("Campo requerido"),
+    fechaInicial: Yup.string().trim().required("Campo requerido"),
+    fechaFinal: Yup.string().trim().required("Campo requerido"),
   });
 
-  const onSubmit = async ({ ano }, { setSubmitting, setErrors, resetForm }) => {
+  const onSubmit = async (
+    { ano, fechaInicial, fechaFinal },
+    { setSubmitting, setErrors, resetForm }
+  ) => {
     if (ano < 2025) {
       return setErrors({ hora: "Hora debe ser mayor que 2025" });
     }
@@ -48,7 +72,7 @@ const Index = () => {
 
     try {
       let response = await fetch(
-        `${ip}:${port}/informeCostosAduana/list/${ano}`,
+        `${ip}:${port}/informeCostosAduana/list/${ano}/${fechaInicial}/${fechaFinal}`,
         {
           method: "GET",
           mode: "cors",
@@ -87,9 +111,14 @@ const Index = () => {
         </Typography>
 
         <Formik
-          initialValues={{ ano: ano }}
+          initialValues={{
+            ano: ano,
+            fechaInicial: fechaInicial,
+            fechaFinal: fechaFinal,
+          }}
           onSubmit={onSubmit}
           validationSchema={validationSchema}
+          enableReinitialize={true}
         >
           {({
             values,
@@ -114,10 +143,46 @@ const Index = () => {
                 onBlur={handleBlur}
                 id="ano"
                 label="Ingrese Año"
-                fullWidth
+                //fullWidth
                 sx={{ mb: 3 }}
                 error={errors.ano && touched.ano}
                 helperText={errors.ano && touched.ano && errors.ano}
+              />
+
+              <TextField
+                type="date"
+                placeholder="fechaInicial"
+                value={values.fechaInicial}
+                onChange={handleChange}
+                name="fechaInicial"
+                onBlur={handleBlur}
+                id="fechaInicial"
+                label="Fecha Aceptacion Inicial"
+                //fullWidth
+                sx={!isMobile ? { mb: 3, ml: 3 } : { mb: 3 }}
+                error={errors.fechaInicial && touched.fechaInicial}
+                helperText={
+                  errors.fechaInicial &&
+                  touched.fechaInicial &&
+                  errors.fechaInicial
+                }
+              />
+
+              <TextField
+                type="date"
+                placeholder="fechaFinal"
+                value={values.fechaFinal}
+                onChange={handleChange}
+                name="fechaFinal"
+                onBlur={handleBlur}
+                id="fechaFinal"
+                label="Fecha Aceptacion Final"
+                //fullWidth
+                sx={!isMobile ? { mb: 3, ml: 3 } : { mb: 3 }}
+                error={errors.fechaFinal && touched.fechaFinal}
+                helperText={
+                  errors.fechaFinal && touched.fechaFinal && errors.fechaFinal
+                }
               />
 
               <Button
@@ -130,10 +195,6 @@ const Index = () => {
               >
                 Generar Informe
               </Button>
-
-              {/* <Button fullWidth component={Link} to="/">
-              Ya tienes cuenta? Inicia Sesion
-            </Button> */}
             </Box>
           )}
         </Formik>
