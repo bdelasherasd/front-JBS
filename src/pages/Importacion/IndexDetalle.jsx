@@ -568,7 +568,7 @@ const IndexDetalle = () => {
                     ml: 2,
                   }}
                   onClick={handleClickDesAprobar}
-                  hidden={estado === "Ingresado" || usuario.includes("(sa)")}
+                  hidden={estado === "Ingresado" || !usuario.includes("(sa)")}
                 >
                   Cambiar a Ingresado
                 </Button>
