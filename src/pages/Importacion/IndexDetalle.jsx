@@ -49,6 +49,7 @@ const IndexDetalle = () => {
   const [proveedor, setProveedor] = useState("");
   const [estado, setEstado] = useState("");
   const [valido, setValido] = useState("");
+  const [usuario, setUsuario] = useState("");
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -60,6 +61,12 @@ const IndexDetalle = () => {
         setNroRefer(dataImp.refCliente);
         setFecha(dataImp.fechaETA);
         setProveedor(dataImp.proveedor);
+
+        let dataUser = sessionStorage.getItem("user");
+        if (dataUser) {
+          let user = JSON.parse(dataUser);
+          setUsuario(user.nombre);
+        }
 
         if (dataImp.estado === "0") {
           setEstado("Ingresado");
@@ -230,7 +237,7 @@ const IndexDetalle = () => {
     window.open(`${ip}:${port}/pdfs/${datafetch2.nombreArchivo}`, "_blank");
   };
 
-  const handleClickInsertarAprobar = async () => {
+  const handleClickAprobar = async () => {
     if (!valido) {
       Swal.fire(
         "Error",
@@ -272,6 +279,48 @@ const IndexDetalle = () => {
           setEstado("Aprobado");
         } else {
           Swal.fire("Error", "No se pudo aprobar la importación", "error");
+        }
+      }
+    });
+  };
+
+  const handleClickDesAprobar = async () => {
+    Swal.fire({
+      title: "¿Está seguro?",
+      text: "¿Desea desaprobar esta importación?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Sí, desaprobar",
+      cancelButtonText: "Cancelar",
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        let user = sessionStorage.getItem("user");
+        let dataUser = JSON.parse(user);
+        let data = {
+          idImportacion: id,
+          usuarioAprueba: dataUser.email,
+        };
+        let response = await fetch(
+          `${ip}:${port}/importaciones/desapruebaImportacion`,
+          {
+            method: "POST",
+            mode: "cors",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(data),
+          }
+        );
+
+        if (response.ok) {
+          Swal.fire(
+            "DesAprobado",
+            "La importación ha sido desaprobada",
+            "success"
+          );
+          setEstado("Ingresado");
+        } else {
+          Swal.fire("Error", "No se pudo desaprobar la importación", "error");
         }
       }
     });
@@ -504,10 +553,24 @@ const IndexDetalle = () => {
                   sx={{
                     mb: 1,
                   }}
-                  onClick={handleClickInsertarAprobar}
+                  onClick={handleClickAprobar}
                   disabled={estado === "Aprobado"}
                 >
                   {estado === "Ingresado" ? "Aprobar" : "Aprobado"}
+                </Button>
+
+                <Button
+                  variant="contained"
+                  color="primary"
+                  size="small"
+                  sx={{
+                    mb: 1,
+                    ml: 2,
+                  }}
+                  onClick={handleClickDesAprobar}
+                  hidden={estado === "Ingresado" || usuario != "sa"}
+                >
+                  Cambiar a Ingresado
                 </Button>
               </Box>
               <Typography variant="h10">Detalle</Typography>
