@@ -81,6 +81,11 @@ const NavbarMobile = () => {
     navigate("/dashboard/informeCostosAduana");
   };
 
+  const handleClickInformeDetalles = () => {
+    //setAnchorEl(null);
+    navigate("/dashboard/informeDetalles");
+  };
+
   return (
     <Navbar expand="lg" bg="dark" variant="dark" className="px-3">
       <Container>
@@ -160,6 +165,9 @@ const NavbarMobile = () => {
                 onClick={handleClickInformeCostosAduana}
               >
                 Informe de Costos Aduana
+              </NavDropdown.Item>
+              <NavDropdown.Item href="#" onClick={handleClickInformeDetalles}>
+                Informe de Detalles de Importación
               </NavDropdown.Item>
             </NavDropdown>
 

@@ -73,6 +73,11 @@ const NavbarNormal = () => {
     navigate("/dashboard/informeCostosAduana");
   };
 
+  const handleClickInformeDetalles = () => {
+    //setAnchorEl(null);
+    navigate("/dashboard/informeDetalles");
+  };
+
   return (
     <>
       <header
@@ -117,6 +122,11 @@ const NavbarNormal = () => {
                   <li>
                     <a href="#" onClick={handleClickInformeCostosAduana}>
                       Informe de Costos Aduana
+                    </a>
+                  </li>
+                  <li>
+                    <a href="#" onClick={handleClickInformeDetalles}>
+                      Informe de Detalles de Importación
                     </a>
                   </li>
                 </ul>

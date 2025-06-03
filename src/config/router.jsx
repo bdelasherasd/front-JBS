@@ -34,6 +34,7 @@ import ImportacionUpdatePackingList from "../pages/Importacion/UpdatePackingList
 import ImportacionInsertPackingList from "../pages/Importacion/InsertPackingList";
 
 import InformeCostosAduanaIndex from "../pages/InformeCostosAduana/Index";
+import InformeDetallesIndex from "../pages/InformeDetalles/Index";
 
 export const router = createBrowserRouter([
   {
@@ -96,6 +97,8 @@ export const router = createBrowserRouter([
             path: "informeCostosAduana",
             element: <InformeCostosAduanaIndex />,
           },
+
+          { path: "informeDetalles", element: <InformeDetallesIndex /> },
 
           {
             path: "register",
