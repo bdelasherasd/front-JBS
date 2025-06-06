@@ -98,7 +98,7 @@ const Login = () => {
       {/* </Avatar> */}
 
       <Typography variant="h5" sx={{ mb: 3, mt: 3 }} component="h1">
-        Login
+        Iniciar sesión
       </Typography>
 
       <Formik
@@ -156,7 +156,7 @@ const Login = () => {
               fullWidth
               sx={{ mb: 3 }}
             >
-              Login
+              Iniciar sesión
             </Button>
 
             <Button fullWidth component={Link} to="/recover">

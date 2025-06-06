@@ -277,7 +277,7 @@ const Recover = () => {
             </Button>
 
             <Button fullWidth component={Link} to="/">
-              Volver a Login
+              Volver a Iniciar sesión
             </Button>
           </Box>
         )}
