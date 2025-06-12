@@ -28,6 +28,7 @@ const UpdateDetalle = () => {
   const ip = url[0] + ":" + url[1];
   const port = 3000;
 
+  let [invoice, setInvoice] = useState("");
   let [codigo, setCodigo] = useState("");
   let [cantidad, setCantidad] = useState("");
   let [valor, setValor] = useState("");
@@ -49,6 +50,7 @@ const UpdateDetalle = () => {
       let dataResponse = await datafetch.json();
       let data = JSON.parse(dataResponse.detalles)[indice];
       console.log(data);
+      setInvoice(data.invoiceNumber);
       setCodigo(data.codigo);
       setCantidad(data.cantidad);
       setValor(data.valor);
@@ -78,6 +80,10 @@ const UpdateDetalle = () => {
   }, []);
 
   const validationSchema = Yup.object().shape({
+    invoice: Yup.string()
+      .trim()
+      .min(2, "Minimo 2 caracteres")
+      .required("Campo requerido"),
     codigo: Yup.string()
       .trim()
       .min(2, "Minimo 2 caracteres")
@@ -97,7 +103,7 @@ const UpdateDetalle = () => {
   });
 
   const onSubmit = async (
-    { codigo, cantidad, valor, peso },
+    { invoice, codigo, cantidad, valor, peso },
     { setSubmitting, setErrors, resetForm }
   ) => {
     let cantidadInvalida = await valCantidad(cantidad);
@@ -113,6 +119,7 @@ const UpdateDetalle = () => {
     let data = {
       idImportacion: idImportacion,
       index: indice,
+      invoiceNumber: invoice,
       codigo: codigo,
       cantidad: cantidad,
       valor: valor,
@@ -180,6 +187,7 @@ const UpdateDetalle = () => {
 
         <Formik
           initialValues={{
+            invoice: invoice,
             codigo: codigo,
             cantidad: cantidad,
             valor: valor,
@@ -225,6 +233,20 @@ const UpdateDetalle = () => {
                     }
                   />
                 )}
+              />
+              <TextField
+                type="text"
+                placeholder="Ingrese Invoice"
+                value={values.invoice}
+                onChange={handleChange}
+                name="invoice"
+                onBlur={handleBlur}
+                id="invoice"
+                label="Ingrese Invoice"
+                fullWidth
+                sx={{ mb: 3 }}
+                error={errors.invoice && touched.invoice}
+                helperText={errors.invoice && touched.invoice && errors.invoice}
               />
 
               <TextField

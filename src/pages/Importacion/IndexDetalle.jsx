@@ -594,6 +594,7 @@ const IndexDetalle = () => {
                 >
                   <TableHead>
                     <TableRow>
+                      <TableCell>Invoice</TableCell>
                       <TableCell>Codigo</TableCell>
                       <TableCell>Cantidad</TableCell>
                       <TableCell>Valor</TableCell>
@@ -605,6 +606,18 @@ const IndexDetalle = () => {
                     {tableDetalle.length > 0 ? (
                       tableDetalle.map((e, index) => (
                         <TableRow key={index}>
+                          <TableCell>
+                            <Typography
+                              variant="caption"
+                              sx={{
+                                color:
+                                  e.invoiceNumber == "0" ? "red" : "inherit",
+                              }}
+                            >
+                              {e.invoiceNumber}
+                            </Typography>
+                          </TableCell>
+
                           <TableCell>
                             <Typography
                               variant="caption"
