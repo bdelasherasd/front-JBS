@@ -50,6 +50,7 @@ const IndexDetalle = () => {
   const [estado, setEstado] = useState("");
   const [valido, setValido] = useState("");
   const [usuario, setUsuario] = useState("");
+  const [tipoCambioAlternativo, setTipoCambioAlternativo] = useState("");
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -61,6 +62,7 @@ const IndexDetalle = () => {
         setNroRefer(dataImp.refCliente);
         setFecha(dataImp.fechaETA);
         setProveedor(dataImp.proveedor);
+        setTipoCambioAlternativo(dataImp.tipoCambioAlternativo);
 
         let dataUser = sessionStorage.getItem("user");
         if (dataUser) {
@@ -325,6 +327,11 @@ const IndexDetalle = () => {
       }
     });
   };
+
+  const handleClickUpdateTipoCambioAlternativo = async () => {
+    navigate(`/dashboard/importacion-update-tipo-cambio-alternativo/${id}`);
+  };
+
   return (
     <Container maxWidth="lg">
       <Box
@@ -831,6 +838,19 @@ const IndexDetalle = () => {
                   </TableBody>
                 </Table>
               </Paper>
+            </Box>
+
+            <Box flex={1} sx={{ mt: 3 }}>
+              <Typography variant="caption">
+                Tipo Cambio Alternativo:
+                <Button
+                  variant="outlined"
+                  sx={{ ml: 2 }}
+                  onClick={() => handleClickUpdateTipoCambioAlternativo()}
+                >
+                  {tipoCambioAlternativo}
+                </Button>
+              </Typography>
             </Box>
           </Box>
         </Box>

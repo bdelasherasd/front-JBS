@@ -32,6 +32,7 @@ import ImportacionInsertDetalle from "../pages/Importacion/InsertDetalle";
 
 import ImportacionUpdatePackingList from "../pages/Importacion/UpdatePackingList";
 import ImportacionInsertPackingList from "../pages/Importacion/InsertPackingList";
+import UpdateTipoCambioAlternativo from "../pages/Importacion/UpdateTipoCambioAlternativo";
 
 import InformeCostosAduanaIndex from "../pages/InformeCostosAduana/Index";
 import InformeDetallesIndex from "../pages/InformeDetalles/Index";
@@ -91,6 +92,10 @@ export const router = createBrowserRouter([
           {
             path: "importacion-insert-packing-list/:idImportacion",
             element: <ImportacionInsertPackingList />,
+          },
+          {
+            path: "importacion-update-tipo-cambio-alternativo/:idImportacion",
+            element: <UpdateTipoCambioAlternativo />,
           },
 
           {
