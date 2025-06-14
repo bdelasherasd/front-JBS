@@ -26,6 +26,7 @@ import {
 import { Formik } from "formik";
 import * as Yup from "yup";
 import Swal from "sweetalert2";
+import { useUserContext } from "../../context/UserContext";
 
 const IndexDetalle = () => {
   const id = useParams().id;
@@ -328,8 +329,22 @@ const IndexDetalle = () => {
     });
   };
 
+  const { user, rutasPermitidas, rutasControladas } = useUserContext();
   const handleClickUpdateTipoCambioAlternativo = async () => {
-    navigate(`/dashboard/importacion-update-tipo-cambio-alternativo/${id}`);
+    const purePathname =
+      "/dashboard/importacion-update-tipo-cambio-alternativo";
+
+    const isAllowed = rutasPermitidas.includes(purePathname);
+    const isControled = rutasControladas.includes(purePathname);
+    if (!isAllowed && isControled) {
+      Swal.fire({
+        title: "No Autorizado",
+        text: "No tiene permisos para acceder a esta ruta",
+        icon: "error",
+      });
+    } else {
+      navigate(`/dashboard/importacion-update-tipo-cambio-alternativo/${id}`);
+    }
   };
 
   return (
