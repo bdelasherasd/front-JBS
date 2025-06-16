@@ -52,6 +52,11 @@ const IndexDetalle = () => {
   const [valido, setValido] = useState("");
   const [usuario, setUsuario] = useState("");
   const [tipoCambioAlternativo, setTipoCambioAlternativo] = useState("");
+
+  const [totalCantidad, setTotalCantidad] = useState(0);
+  const [totalPeso, setTotalPeso] = useState(0);
+  const [totalValor, setTotalValor] = useState(0);
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -92,6 +97,9 @@ const IndexDetalle = () => {
         let data2 = await response2.json();
         setTableDetalle(JSON.parse(data2.detalles || "[]"));
         let tabla = JSON.parse(data2.detalles || "[]");
+        setTotalCantidad(0);
+        setTotalPeso(0);
+        setTotalValor(0);
         for (let [index, detalle] of tabla.entries()) {
           if (
             detalle.codigoInvalido ||
@@ -101,8 +109,13 @@ const IndexDetalle = () => {
           ) {
             setValido(false);
           }
+          setTotalCantidad((prev) => prev + parseFloat(detalle.cantidad || 0));
+          setTotalPeso((prev) => prev + parseFloat(detalle.peso || 0));
+          setTotalValor((prev) => prev + parseFloat(detalle.valor || 0));
         }
-
+        setTotalCantidad((prev) => prev.toFixed(2));
+        setTotalPeso((prev) => prev.toFixed(2));
+        setTotalValor((prev) => prev.toFixed(2));
         if (tabla.length === 0) {
           setValido(false);
         }
@@ -614,7 +627,7 @@ const IndexDetalle = () => {
                   sx={{ fontSize: "0.875rem" }}
                   display="flex"
                 >
-                  <TableHead>
+                  <TableHead sx={{ backgroundColor: "#f5f5f5" }}>
                     <TableRow>
                       <TableCell>Invoice</TableCell>
                       <TableCell>Codigo</TableCell>
@@ -647,7 +660,7 @@ const IndexDetalle = () => {
                                 color: e.codigoInvalido ? "red" : "inherit",
                               }}
                             >
-                              {e.codigo}
+                              {e.codigo.substring(0, 15) || ""}
                             </Typography>
                           </TableCell>
                           <TableCell>
@@ -657,7 +670,7 @@ const IndexDetalle = () => {
                                 color: e.cantidadInvalida ? "red" : "inherit",
                               }}
                             >
-                              {e.cantidad}
+                              {e.cantidad.substring(0, 15) || ""}
                             </Typography>
                           </TableCell>
 
@@ -668,7 +681,7 @@ const IndexDetalle = () => {
                                 color: e.valorInvalido ? "red" : "inherit",
                               }}
                             >
-                              {e.valor}
+                              {e.valor.substring(0, 15) || ""}
                             </Typography>
                           </TableCell>
 
@@ -715,13 +728,33 @@ const IndexDetalle = () => {
                       ))
                     ) : (
                       <TableRow>
-                        <TableCell colSpan={4} align="center">
+                        <TableCell colSpan={6} align="center">
                           <Typography variant="caption">
                             No hay datos disponibles
                           </Typography>
                         </TableCell>
                       </TableRow>
                     )}
+                    <TableRow sx={{ backgroundColor: "#f5f5f5" }}>
+                      <TableCell>
+                        <Typography variant="subtitle2">Totales</Typography>
+                      </TableCell>
+                      <TableCell></TableCell>
+                      <TableCell>
+                        <Typography variant="subtitle2">
+                          {totalCantidad}
+                        </Typography>
+                      </TableCell>
+                      <TableCell>
+                        <Typography variant="subtitle2">
+                          {totalValor}
+                        </Typography>
+                      </TableCell>
+                      <TableCell>
+                        <Typography variant="subtitle2">{totalPeso}</Typography>
+                      </TableCell>
+                      <TableCell></TableCell>
+                    </TableRow>
                   </TableBody>
                 </Table>
               </Paper>
@@ -745,7 +778,7 @@ const IndexDetalle = () => {
                   sx={{ fontSize: "0.875rem" }}
                   display="flex"
                 >
-                  <TableHead>
+                  <TableHead sx={{ backgroundColor: "#f5f5f5" }}>
                     <TableRow>
                       <TableCell>Descripcion</TableCell>
                       <TableCell>SIF</TableCell>
@@ -762,13 +795,13 @@ const IndexDetalle = () => {
                         <TableRow key={index}>
                           <TableCell>
                             <Typography variant="caption">
-                              {e.descripcion.substring(0, 15)}
+                              {e.descripcion.substring(0, 15) || ""}
                             </Typography>
                           </TableCell>
 
                           <TableCell>
                             <Typography variant="caption">
-                              {e.sif.substring(0, 15)}
+                              {e.sif.substring(0, 15) || ""}
                             </Typography>
                           </TableCell>
 
@@ -787,7 +820,7 @@ const IndexDetalle = () => {
 
                           <TableCell>
                             <Typography variant="caption">
-                              {e.CajasPallet.substring(0, 15)}
+                              {e.CajasPallet.substring(0, 15) || ""}
                             </Typography>
                           </TableCell>
 
@@ -798,7 +831,7 @@ const IndexDetalle = () => {
                                 color: e.pesonetoInvalido ? "red" : "inherit",
                               }}
                             >
-                              {e.PesoNeto.substring(0, 15)}
+                              {e.PesoNeto.substring(0, 15) || ""}
                             </Typography>
                           </TableCell>
 
@@ -809,7 +842,7 @@ const IndexDetalle = () => {
                                 color: e.pesobrutoInvalido ? "red" : "inherit",
                               }}
                             >
-                              {e.PesoBruto.substring(0, 15)}
+                              {e.PesoBruto.substring(0, 15) || ""}
                             </Typography>
                           </TableCell>
 
