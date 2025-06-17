@@ -37,6 +37,8 @@ import UpdateTipoCambioAlternativo from "../pages/Importacion/UpdateTipoCambioAl
 import InformeCostosAduanaIndex from "../pages/InformeCostosAduana/Index";
 import InformeDetallesIndex from "../pages/InformeDetalles/Index";
 
+import NotificaProceso from "../pages/NotificaProceso/Index";
+
 export const router = createBrowserRouter([
   {
     path: "/",
@@ -109,6 +111,8 @@ export const router = createBrowserRouter([
             path: "register",
             element: <Register />,
           },
+
+          { path: "notifica-proceso", element: <NotificaProceso /> },
         ],
       },
     ],

@@ -168,7 +168,7 @@ const Index = () => {
                 name="fechaInicial"
                 onBlur={handleBlur}
                 id="fechaInicial"
-                label="Fecha Aceptacion Inicial"
+                label="Fecha Pago Inicial"
                 //fullWidth
                 sx={!isMobile ? { mb: 3, ml: 3 } : { mb: 3 }}
                 error={errors.fechaInicial && touched.fechaInicial}
@@ -187,7 +187,7 @@ const Index = () => {
                 name="fechaFinal"
                 onBlur={handleBlur}
                 id="fechaFinal"
-                label="Fecha Aceptacion Final"
+                label="Fecha Pago Final"
                 //fullWidth
                 sx={!isMobile ? { mb: 3, ml: 3 } : { mb: 3 }}
                 error={errors.fechaFinal && touched.fechaFinal}

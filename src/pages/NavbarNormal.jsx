@@ -78,6 +78,11 @@ const NavbarNormal = () => {
     navigate("/dashboard/informeDetalles");
   };
 
+  const handleClickNotificaProceso = () => {
+    //setAnchorEl(null);
+    navigate("/dashboard/notifica-proceso");
+  };
+
   return (
     <>
       <header
@@ -127,6 +132,11 @@ const NavbarNormal = () => {
                   <li>
                     <a href="#" onClick={handleClickInformeDetalles}>
                       Informe de Detalles de Importación
+                    </a>
+                  </li>
+                  <li>
+                    <a href="#" onClick={handleClickNotificaProceso}>
+                      Agenda Notificador de Proceso
                     </a>
                   </li>
                 </ul>

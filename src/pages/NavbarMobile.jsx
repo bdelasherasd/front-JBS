@@ -86,6 +86,11 @@ const NavbarMobile = () => {
     navigate("/dashboard/informeDetalles");
   };
 
+  const handleClickNotificaProceso = () => {
+    //setAnchorEl(null);
+    navigate("/dashboard/notifica-proceso");
+  };
+
   return (
     <Navbar expand="lg" bg="dark" variant="dark" className="px-3">
       <Container>
@@ -168,6 +173,9 @@ const NavbarMobile = () => {
               </NavDropdown.Item>
               <NavDropdown.Item href="#" onClick={handleClickInformeDetalles}>
                 Informe de Detalles de Importación
+              </NavDropdown.Item>
+              <NavDropdown.Item href="#" onClick={handleClickNotificaProceso}>
+                Agenda Notificador de Proceso
               </NavDropdown.Item>
             </NavDropdown>
 

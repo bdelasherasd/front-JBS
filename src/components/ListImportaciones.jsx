@@ -22,6 +22,7 @@ const ListImportaciones = () => {
     { field: "tipoTransporte", headerName: "Transporte", width: 90 },
     { field: "proveedor", headerName: "Proveedor", width: 200 },
     { field: "refCliente", headerName: "Referencia", width: 100 },
+    { field: "fechaCreacion", headerName: "Fecha", width: 100 },
     {
       field: "valido",
       headerName: "Validación",
@@ -74,6 +75,7 @@ const ListImportaciones = () => {
             tipoTransporte: e.tipoTranporte,
             proveedor: e.proveedor,
             refCliente: e.refCliente,
+            fechaCreacion: e.fechaCreacion,
             valido: e.valido ? "Valido" : "Con Errores",
             estado: e.estado,
           }))
