@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { useUserContext } from "../context/UserContext";
 import { logout } from "../config/firebase";
@@ -8,6 +8,25 @@ const NavbarNormal = () => {
   const [menuOpen, setMenuOpen] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false); // Para manejar el submenú
   const { user, setUser } = useUserContext();
+
+  const [usuario, setUsuario] = useState("");
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const storedUser = sessionStorage.getItem("user");
+        if (storedUser) {
+          const parsedUser = JSON.parse(storedUser);
+          setUsuario(parsedUser.email || "Usuario");
+        } else {
+          setUsuario("Usuario no autenticado");
+        }
+      } catch (error) {
+        console.error("Error al obtener el usuario:", error);
+      }
+    };
+    fetchData();
+  }, []);
 
   const handleClick = async () => {
     try {
@@ -89,11 +108,19 @@ const NavbarNormal = () => {
         id="header"
         className="header d-flex align-items-center sticky-top"
       >
-        <div className="container position-relative d-flex align-items-center bg-body-secondary p-3 rounded mt-3">
+        <div className="container position-relative d-flex align-items-center bg-body-secondary p-2 rounded">
           <a href="#" className="logo d-flex align-items-center me-auto">
-            {/* <h3 className="sitename">JBS Chile</h3>
-            <span>.</span> */}
             <img src={logo} alt="Logo" width="100%" height="100%" />
+            <span
+              style={{
+                fontSize: "0.9rem",
+                marginLeft: "5px",
+                color: "#000",
+                fontWeight: "normal",
+              }}
+            >
+              {usuario}
+            </span>
           </a>
 
           <nav id="navmenu" className="navmenu">

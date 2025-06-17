@@ -84,7 +84,7 @@ const Index = () => {
           >
             {tableData.map((user) => (
               <MenuItem key={user.id} value={user.id}>
-                {user.nombre}
+                {user.email}
               </MenuItem>
             ))}
           </Select>
