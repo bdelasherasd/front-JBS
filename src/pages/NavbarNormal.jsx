@@ -110,17 +110,29 @@ const NavbarNormal = () => {
       >
         <div className="container position-relative d-flex align-items-center bg-body-secondary p-2 rounded">
           <a href="#" className="logo d-flex align-items-center me-auto">
-            <img src={logo} alt="Logo" width="100%" height="100%" />
-            <span
-              style={{
-                fontSize: "0.9rem",
-                marginLeft: "5px",
-                color: "#000",
-                fontWeight: "normal",
-              }}
-            >
-              {usuario}
-            </span>
+            <table>
+              <tbody>
+                <tr>
+                  <td>
+                    <img src={logo} alt="Logo" width="50%" height="100%" />
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <span
+                      style={{
+                        fontSize: "0.8rem",
+                        marginLeft: "5px",
+                        color: "#000",
+                        fontWeight: "normal",
+                      }}
+                    >
+                      {usuario}
+                    </span>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
           </a>
 
           <nav id="navmenu" className="navmenu">
