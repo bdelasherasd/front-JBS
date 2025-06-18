@@ -68,7 +68,7 @@ const Index = () => {
       setMessage(response.data.message);
     } catch (error) {
       setError(true);
-      setMessage(error.message);
+      setMessage(error.response.data.error);
     } finally {
       setLoading(false);
     }
