@@ -814,7 +814,7 @@ const IndexDetalle = () => {
                                   : "inherit",
                               }}
                             >
-                              {e.fechaVencimiento}
+                              {e.fechaVencimiento.substring(0, 12) || ""}
                             </Typography>
                           </TableCell>
 
