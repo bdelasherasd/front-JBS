@@ -37,7 +37,20 @@ const ListImportaciones = () => {
         </span>
       ),
     },
-    { field: "estado", headerName: "Estado", width: 100 },
+    {
+      field: "estado",
+      headerName: "Estado",
+      width: 100,
+      renderCell: (params) => (
+        <span
+          style={{
+            color: params.value === "Aprobado" ? "green" : "inherit",
+          }}
+        >
+          {params.value}
+        </span>
+      ),
+    },
     {
       field: "actions",
       headerName: "Acciones",

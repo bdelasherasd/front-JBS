@@ -253,6 +253,21 @@ const IndexDetalle = () => {
     window.open(`${ip}:${port}/pdfs/${datafetch2.nombreArchivo}`, "_blank");
   };
 
+  const handleClickDownloadPdfUyD = async () => {
+    const datafetch = await fetch(
+      `${ip}:${port}/importaciones/getImportacion/${id}`,
+      {
+        method: "GET",
+        mode: "cors",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    const datafetch2 = await datafetch.json();
+    window.open(`${ip}:${port}/pdfs/${datafetch2.nombreArchivo}`, "_blank");
+  };
+
   const handleClickAprobar = async () => {
     if (!valido) {
       Swal.fire(
@@ -389,7 +404,16 @@ const IndexDetalle = () => {
           sx={{ ml: 2, mb: 1 }}
           onClick={handleClickDownloadPdf}
         >
-          pdf original
+          pdf FullSet
+        </Button>
+        <Button
+          variant="contained"
+          color="info"
+          size="small"
+          sx={{ ml: 2, mb: 1 }}
+          onClick={handleClickDownloadPdfUyD}
+        >
+          pdf UYD
         </Button>
 
         <Button
@@ -758,6 +782,53 @@ const IndexDetalle = () => {
                   </TableBody>
                 </Table>
               </Paper>
+
+              <Box sx={{ mt: 2 }}>
+                <Typography variant="h10">Totales por Invoice</Typography>
+                <Paper variant="outlined">
+                  <Table size="small" sx={{ fontSize: "0.875rem" }}>
+                    <TableHead sx={{ backgroundColor: "#f5f5f5" }}>
+                      <TableRow>
+                        <TableCell>Invoice</TableCell>
+                        <TableCell>Total Cantidad</TableCell>
+                        <TableCell>Total Valor</TableCell>
+                        <TableCell>Total Peso</TableCell>
+                      </TableRow>
+                    </TableHead>
+                    <TableBody>
+                      {Object.entries(
+                        tableDetalle.reduce((acc, curr) => {
+                          const invoice = curr.invoiceNumber || "Sin Invoice";
+                          if (!acc[invoice]) {
+                            acc[invoice] = {
+                              totalCantidad: 0,
+                              totalValor: 0,
+                              totalPeso: 0,
+                            };
+                          }
+                          acc[invoice].totalCantidad += parseFloat(
+                            curr.cantidad || 0
+                          );
+                          acc[invoice].totalValor += parseFloat(
+                            curr.valor || 0
+                          );
+                          acc[invoice].totalPeso += parseFloat(curr.peso || 0);
+                          return acc;
+                        }, {})
+                      ).map(([invoice, totals], index) => (
+                        <TableRow key={index}>
+                          <TableCell>{invoice}</TableCell>
+                          <TableCell>
+                            {totals.totalCantidad.toFixed(2)}
+                          </TableCell>
+                          <TableCell>{totals.totalValor.toFixed(2)}</TableCell>
+                          <TableCell>{totals.totalPeso.toFixed(2)}</TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+                </Paper>
+              </Box>
             </Box>
 
             <Box flex={1} sx={{ mt: 3 }}>
