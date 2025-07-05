@@ -255,7 +255,7 @@ const IndexDetalle = () => {
 
   const handleClickDownloadPdfUyD = async () => {
     const datafetch = await fetch(
-      `${ip}:${port}/importaciones/getImportacion/${id}`,
+      `${ip}:${port}/importaciones/getImportacionUyD/${id}`,
       {
         method: "GET",
         mode: "cors",
@@ -265,7 +265,12 @@ const IndexDetalle = () => {
       }
     );
     const datafetch2 = await datafetch.json();
-    window.open(`${ip}:${port}/pdfs/${datafetch2.nombreArchivo}`, "_blank");
+    if (datafetch2.nombreArchivoUyD && datafetch2.nombreArchivoUyD !== "") {
+      window.open(
+        `${ip}:${port}/pdfs/${datafetch2.nombreArchivoUyD}`,
+        "_blank"
+      );
+    }
   };
 
   const handleClickAprobar = async () => {
