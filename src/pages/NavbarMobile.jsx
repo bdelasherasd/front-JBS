@@ -86,6 +86,11 @@ const NavbarMobile = () => {
     navigate("/dashboard/informeDetalles");
   };
 
+  const handleClickInformeAprobados = () => {
+    //setAnchorEl(null);
+    navigate("/dashboard/informeAprobados");
+  };
+
   const handleClickNotificaProceso = () => {
     //setAnchorEl(null);
     navigate("/dashboard/notifica-proceso");
@@ -173,6 +178,9 @@ const NavbarMobile = () => {
               </NavDropdown.Item>
               <NavDropdown.Item href="#" onClick={handleClickInformeDetalles}>
                 Informe de Detalles de Importación
+              </NavDropdown.Item>
+              <NavDropdown.Item href="#" onClick={handleClickInformeAprobados}>
+                Informe de Aprobados
               </NavDropdown.Item>
               <NavDropdown.Item href="#" onClick={handleClickNotificaProceso}>
                 Agenda Notificador de Proceso

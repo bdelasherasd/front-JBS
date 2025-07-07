@@ -36,6 +36,7 @@ import UpdateTipoCambioAlternativo from "../pages/Importacion/UpdateTipoCambioAl
 
 import InformeCostosAduanaIndex from "../pages/InformeCostosAduana/Index";
 import InformeDetallesIndex from "../pages/InformeDetalles/Index";
+import InformeAprobadosIndex from "../pages/InformeAprobados/Index";
 
 import NotificaProceso from "../pages/NotificaProceso/Index";
 
@@ -106,6 +107,8 @@ export const router = createBrowserRouter([
           },
 
           { path: "informeDetalles", element: <InformeDetallesIndex /> },
+
+          { path: "informeAprobados", element: <InformeAprobadosIndex /> },
 
           {
             path: "register",

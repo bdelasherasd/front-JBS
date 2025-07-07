@@ -102,6 +102,11 @@ const NavbarNormal = () => {
     navigate("/dashboard/notifica-proceso");
   };
 
+  const handleClickInformeAprobados = () => {
+    //setAnchorEl(null);
+    navigate("/dashboard/informeAprobados");
+  };
+
   return (
     <>
       <header
@@ -171,6 +176,11 @@ const NavbarNormal = () => {
                   <li>
                     <a href="#" onClick={handleClickInformeDetalles}>
                       Informe de Detalles de Importación
+                    </a>
+                  </li>
+                  <li>
+                    <a href="#" onClick={handleClickInformeAprobados}>
+                      Informe de Aprobados
                     </a>
                   </li>
                   <li>
