@@ -102,6 +102,17 @@ const ListImportaciones = () => {
     localStorage.setItem("importacionesPage", model.page); // Guardar la página actual
   };
 
+  const [filterModel, setFilterModel] = useState(() => {
+    // Restaurar los filtros desde localStorage o usar un modelo vacío por defecto
+    const savedFilters = localStorage.getItem("importacionesFilters");
+    return savedFilters ? JSON.parse(savedFilters) : { items: [] };
+  });
+
+  const handleFilterChange = (model) => {
+    setFilterModel(model);
+    localStorage.setItem("importacionesFilters", JSON.stringify(model)); // Guardar los filtros actuales
+  };
+
   return (
     <Box sx={{ width: "90%", mx: "auto", bgcolor: "grey.200", p: 2 }}>
       <Button
@@ -119,6 +130,8 @@ const ListImportaciones = () => {
         autoHeight
         paginationModel={paginationModel} // Vincular el modelo de paginación
         onPaginationModelChange={handlePaginationChange} // Manejar cambios de paginación
+        filterModel={filterModel} // Vincular el modelo de filtros
+        onFilterModelChange={handleFilterChange} // Manejar cambios de filtros
         initialState={{
           pagination: {
             paginationModel: { pageSize: 10 },
