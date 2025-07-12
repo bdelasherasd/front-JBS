@@ -107,6 +107,11 @@ const NavbarNormal = () => {
     navigate("/dashboard/informeAprobados");
   };
 
+  const handleClickGeneraSoftland = () => {
+    //setAnchorEl(null);
+    navigate("/dashboard/genera-softland");
+  };
+
   return (
     <>
       <header
@@ -186,6 +191,11 @@ const NavbarNormal = () => {
                   <li>
                     <a href="#" onClick={handleClickNotificaProceso}>
                       Agenda Notificador de Proceso
+                    </a>
+                  </li>
+                  <li>
+                    <a href="#" onClick={handleClickGeneraSoftland}>
+                      Genera Excel Guias de Entrada Softland
                     </a>
                   </li>
                 </ul>

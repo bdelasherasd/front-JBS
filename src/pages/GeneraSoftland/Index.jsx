@@ -23,7 +23,6 @@ import Swal from "sweetalert2";
 import * as XLSX from "xlsx";
 
 const Index = () => {
-  let [ano, setAno] = useState("");
   let [fechaInicial, setFechaInicial] = useState("");
   let [fechaFinal, setFechaFinal] = useState("");
 
@@ -40,7 +39,6 @@ const Index = () => {
   useEffect(() => {
     const fetchData = async () => {
       const currentYear = new Date().getFullYear();
-      setAno(currentYear.toString());
       const currentDate = new Date();
       setFechaInicial(currentDate.toISOString().split("T")[0]); // Formato YYYY-MM-DD
       setFechaFinal(currentDate.toISOString().split("T")[0]); // Formato YYYY-MM-DD
@@ -50,33 +48,17 @@ const Index = () => {
   }, []);
 
   const validationSchema = Yup.object().shape({
-    ano: Yup.string()
-      .trim()
-      .min(4, "Minimo 4 caracteres")
-      .required("Campo requerido"),
     fechaInicial: Yup.string().trim().required("Campo requerido"),
     fechaFinal: Yup.string().trim().required("Campo requerido"),
   });
 
   const onSubmit = async (
-    { ano, fechaInicial, fechaFinal },
+    { fechaInicial, fechaFinal },
     { setSubmitting, setErrors, resetForm }
   ) => {
-    // if (ano < 2025) {
-    //   return Swal.fire({
-    //     icon: "error",
-    //     title: "Año no válido",
-    //     text: "El año debe ser 2025 o posterior.",
-    //   });
-    // }
-    let data = {
-      ano: ano.toString(),
-    };
-    console.log("data:", data);
-
     try {
       let response = await fetch(
-        `${ip}:${port}/informeAprobados/list/${ano}/${fechaInicial}/${fechaFinal}/0`,
+        `${ip}:${port}/generaSoftland/${fechaInicial}/${fechaFinal}`,
         {
           method: "GET",
           mode: "cors",
@@ -97,8 +79,8 @@ const Index = () => {
 
       const ws = XLSX.utils.json_to_sheet(dataResponse);
       const wb = XLSX.utils.book_new();
-      XLSX.utils.book_append_sheet(wb, ws, "Detalles");
-      XLSX.writeFile(wb, "Detalles.xlsx");
+      XLSX.utils.book_append_sheet(wb, ws, "Guias de Entrada");
+      XLSX.writeFile(wb, "GuiasEntradaSoftland.xlsx");
     } catch (error) {
       return setErrors({ minuto: error.message });
     } finally {
@@ -118,12 +100,11 @@ const Index = () => {
         }}
       >
         <Typography variant="h6" sx={{ p: 2 }} gutterBottom>
-          Informe de Aprobados
+          Genera Excel Guias de Entrada Softland
         </Typography>
 
         <Formik
           initialValues={{
-            ano: ano,
             fechaInicial: fechaInicial,
             fechaFinal: fechaFinal,
           }}
@@ -145,21 +126,6 @@ const Index = () => {
               component="form"
               sx={{ mt: 1, ml: 3, mr: 3 }}
             >
-              <TextField
-                type="number"
-                placeholder="ano"
-                value={values.ano}
-                onChange={handleChange}
-                name="ano"
-                onBlur={handleBlur}
-                id="ano"
-                label="Ingrese Año"
-                //fullWidth
-                sx={{ mb: 3 }}
-                error={errors.ano && touched.ano}
-                helperText={errors.ano && touched.ano && errors.ano}
-              />
-
               <TextField
                 type="date"
                 placeholder="fechaInicial"
@@ -204,7 +170,7 @@ const Index = () => {
                 fullWidth
                 sx={{ mb: 3 }}
               >
-                Generar Informe
+                Generar Excel
               </Button>
             </Box>
           )}

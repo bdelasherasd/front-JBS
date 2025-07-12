@@ -27,6 +27,7 @@ import { Formik } from "formik";
 import * as Yup from "yup";
 import Swal from "sweetalert2";
 import { useUserContext } from "../../context/UserContext";
+import * as XLSX from "xlsx";
 
 const IndexDetalle = () => {
   const id = useParams().id;
@@ -273,6 +274,37 @@ const IndexDetalle = () => {
     }
   };
 
+  const handleClickDownloadExcel = async () => {
+    try {
+      let response = await fetch(
+        `${ip}:${port}/informeAprobados/list/2025/2025-01-01/2025-01-31/${nroDespacho}`,
+        {
+          method: "GET",
+          mode: "cors",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      let dataResponse = await response.json();
+
+      if (dataResponse.length === 0) {
+        return Swal.fire({
+          icon: "info",
+          title: "No hay datos disponibles",
+          text: "No se encontraron registros para los filtros seleccionados.",
+        });
+      }
+
+      const ws = XLSX.utils.json_to_sheet(dataResponse);
+      const wb = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(wb, ws, "Detalles");
+      XLSX.writeFile(wb, "Detalles.xlsx");
+    } catch (error) {
+      console.error("Error downloading Excel:", error);
+    }
+  };
+
   const handleClickAprobar = async () => {
     if (!valido) {
       Swal.fire(
@@ -419,6 +451,16 @@ const IndexDetalle = () => {
           onClick={handleClickDownloadPdfUyD}
         >
           pdf UYD
+        </Button>
+
+        <Button
+          variant="contained"
+          color="info"
+          size="small"
+          sx={{ ml: 2, mb: 1 }}
+          onClick={handleClickDownloadExcel}
+        >
+          Excel
         </Button>
 
         <Button
