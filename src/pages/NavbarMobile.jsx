@@ -96,6 +96,11 @@ const NavbarMobile = () => {
     navigate("/dashboard/notifica-proceso");
   };
 
+  const handleClickGeneraSoftland = () => {
+    //setAnchorEl(null);
+    navigate("/dashboard/genera-softland");
+  };
+
   return (
     <Navbar expand="lg" bg="dark" variant="dark" className="px-3">
       <Container>
@@ -184,6 +189,9 @@ const NavbarMobile = () => {
               </NavDropdown.Item>
               <NavDropdown.Item href="#" onClick={handleClickNotificaProceso}>
                 Agenda Notificador de Proceso
+              </NavDropdown.Item>
+              <NavDropdown.Item href="#" onClick={handleClickGeneraSoftland}>
+                Genera Excel Guias de Entrada Softland
               </NavDropdown.Item>
             </NavDropdown>
 

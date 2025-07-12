@@ -299,7 +299,7 @@ const IndexDetalle = () => {
       const ws = XLSX.utils.json_to_sheet(dataResponse);
       const wb = XLSX.utils.book_new();
       XLSX.utils.book_append_sheet(wb, ws, "Detalles");
-      XLSX.writeFile(wb, "Detalles.xlsx");
+      XLSX.writeFile(wb, `Detalles_${nroDespacho}.xlsx`);
     } catch (error) {
       console.error("Error downloading Excel:", error);
     }
