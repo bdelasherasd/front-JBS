@@ -300,6 +300,25 @@ const IndexDetalle = () => {
       const wb = XLSX.utils.book_new();
       XLSX.utils.book_append_sheet(wb, ws, "Detalles");
       XLSX.writeFile(wb, `Detalles_${nroDespacho}.xlsx`);
+
+      let response2 = await fetch(
+        `${ip}:${port}/informeAprobadosModificaExcel/list/2025/2025-01-01/2025-01-31/${nroDespacho}`,
+        {
+          method: "GET",
+          mode: "cors",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      const blob = await response2.blob();
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "output.xlsx";
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
     } catch (error) {
       console.error("Error downloading Excel:", error);
     }
