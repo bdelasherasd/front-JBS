@@ -112,6 +112,11 @@ const NavbarNormal = () => {
     navigate("/dashboard/genera-softland");
   };
 
+  const handleClickCargaProveedores = () => {
+    //setAnchorEl(null);
+    navigate("/dashboard/carga-proveedores");
+  };
+
   return (
     <>
       <header
@@ -166,6 +171,11 @@ const NavbarNormal = () => {
                   <li>
                     <a href="#" onClick={handleClickCargaSku}>
                       Carga SKU
+                    </a>
+                  </li>
+                  <li>
+                    <a href="#" onClick={handleClickCargaProveedores}>
+                      Carga Proveedores
                     </a>
                   </li>
                   <li>

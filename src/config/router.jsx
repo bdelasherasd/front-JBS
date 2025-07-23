@@ -41,6 +41,7 @@ import InformeAprobadosIndex from "../pages/InformeAprobados/Index";
 import GeneraSoftland from "../pages/GeneraSoftland/Index";
 
 import NotificaProceso from "../pages/NotificaProceso/Index";
+import CargaProveedores from "../pages/CargaProveedor/Index";
 
 export const router = createBrowserRouter([
   {
@@ -75,6 +76,8 @@ export const router = createBrowserRouter([
           { path: "rpa-rossi", element: <RpaRossi /> },
 
           { path: "carga-sku", element: <CargaSku /> },
+
+          { path: "carga-proveedores", element: <CargaProveedores /> },
 
           { path: "tareas-programadas", element: <TareasProgramadas /> },
 

@@ -101,6 +101,11 @@ const NavbarMobile = () => {
     navigate("/dashboard/genera-softland");
   };
 
+  const handleClickCargaProveedores = () => {
+    //setAnchorEl(null);
+    navigate("/dashboard/carga-proveedores");
+  };
+
   return (
     <Navbar expand="lg" bg="dark" variant="dark" className="px-3">
       <Container>
@@ -171,6 +176,9 @@ const NavbarMobile = () => {
               </NavDropdown.Item>
               <NavDropdown.Item href="#" onClick={handleClickCargaSku}>
                 Carga SKU
+              </NavDropdown.Item>
+              <NavDropdown.Item href="#" onClick={handleClickCargaProveedores}>
+                Carga Proveedores
               </NavDropdown.Item>
               <NavDropdown.Item href="#" onClick={handleClickImportacion}>
                 Importaciones
