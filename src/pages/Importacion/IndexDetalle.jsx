@@ -276,30 +276,30 @@ const IndexDetalle = () => {
 
   const handleClickDownloadExcel = async () => {
     try {
-      let response = await fetch(
-        `${ip}:${port}/informeAprobados/list/2025/2025-01-01/2025-01-31/${nroDespacho}`,
-        {
-          method: "GET",
-          mode: "cors",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
-      let dataResponse = await response.json();
+      // let response = await fetch(
+      //   `${ip}:${port}/informeAprobados/list/2025/2025-01-01/2025-01-31/${nroDespacho}`,
+      //   {
+      //     method: "GET",
+      //     mode: "cors",
+      //     headers: {
+      //       "Content-Type": "application/json",
+      //     },
+      //   }
+      // );
+      // let dataResponse = await response.json();
 
-      if (dataResponse.length === 0) {
-        return Swal.fire({
-          icon: "info",
-          title: "No hay datos disponibles",
-          text: "No se encontraron registros para los filtros seleccionados.",
-        });
-      }
+      // if (dataResponse.length === 0) {
+      //   return Swal.fire({
+      //     icon: "info",
+      //     title: "No hay datos disponibles",
+      //     text: "No se encontraron registros para los filtros seleccionados.",
+      //   });
+      // }
 
-      const ws = XLSX.utils.json_to_sheet(dataResponse);
-      const wb = XLSX.utils.book_new();
-      XLSX.utils.book_append_sheet(wb, ws, "Detalles");
-      XLSX.writeFile(wb, `Detalles_${nroDespacho}.xlsx`);
+      // const ws = XLSX.utils.json_to_sheet(dataResponse);
+      // const wb = XLSX.utils.book_new();
+      // XLSX.utils.book_append_sheet(wb, ws, "Detalles");
+      // XLSX.writeFile(wb, `Detalles_${nroDespacho}.xlsx`);
 
       let response2 = await fetch(
         `${ip}:${port}/informeAprobadosModificaExcel/list/2025/2025-01-01/2025-01-31/${nroDespacho}`,
@@ -315,7 +315,7 @@ const IndexDetalle = () => {
       const url = window.URL.createObjectURL(blob);
       const a = document.createElement("a");
       a.href = url;
-      a.download = "output.xlsx";
+      a.download = `Detalles_${nroDespacho}.xlsx`;
       document.body.appendChild(a);
       a.click();
       a.remove();
