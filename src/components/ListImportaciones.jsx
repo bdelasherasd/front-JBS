@@ -40,11 +40,25 @@ const ListImportaciones = () => {
     {
       field: "estado",
       headerName: "Estado",
-      width: 100,
+      width: 80,
       renderCell: (params) => (
         <span
           style={{
             color: params.value === "Aprobado" ? "green" : "inherit",
+          }}
+        >
+          {params.value}
+        </span>
+      ),
+    },
+    {
+      field: "estadoSoftland",
+      headerName: "Softland",
+      width: 80,
+      renderCell: (params) => (
+        <span
+          style={{
+            color: params.value === "Si" ? "green" : "inherit",
           }}
         >
           {params.value}
@@ -91,6 +105,7 @@ const ListImportaciones = () => {
             fechaCreacion: e.fechaCreacion,
             valido: e.valido ? "Valido" : "Con Errores",
             estado: e.estado,
+            estadoSoftland: e.estadoSoftland,
           }))
         );
       })

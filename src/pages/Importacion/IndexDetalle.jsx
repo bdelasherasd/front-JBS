@@ -48,8 +48,10 @@ const IndexDetalle = () => {
   const [nroDespacho, setNroDespacho] = useState("");
   const [nroRefer, setNroRefer] = useState("");
   const [fecha, setFecha] = useState("");
+  const [fechaPago, setFechaPago] = useState("");
   const [proveedor, setProveedor] = useState("");
   const [estado, setEstado] = useState("");
+  const [estadoSoftland, setEstadoSoftland] = useState("");
   const [valido, setValido] = useState("");
   const [usuario, setUsuario] = useState("");
   const [tipoCambioAlternativo, setTipoCambioAlternativo] = useState("");
@@ -65,7 +67,14 @@ const IndexDetalle = () => {
           `${ip}:${port}/importaciones/getImport/${id}`
         );
         let dataImp = await responseImp.json();
+
         setNroDespacho(dataImp.nroDespacho);
+        let reponseCsv = await fetch(
+          `${ip}:${port}/importaciones/getCsv/${dataImp.nroDespacho}`
+        );
+        let dataCsv = await reponseCsv.json();
+        setFechaPago(dataCsv.fecha_pago);
+
         setNroRefer(dataImp.refCliente);
         setFecha(dataImp.fechaETA);
         setProveedor(dataImp.proveedor);
@@ -82,6 +91,8 @@ const IndexDetalle = () => {
         } else if (dataImp.estado === "1") {
           setEstado("Aprobado");
         }
+
+        setEstadoSoftland(dataImp.estadoSoftland || "0");
 
         let response = await fetch(
           `${ip}:${port}/importaciones/listGastosAgencia/${id}`
@@ -324,6 +335,51 @@ const IndexDetalle = () => {
     }
   };
 
+  const handleClickDownloadSoftland = async () => {
+    if (!fechaPago) {
+      Swal.fire({
+        icon: "info",
+        title: "Fecha de Pago DIN no disponible",
+        text: "No se puede generar el archivo de Softland sin la fecha de pago.",
+      });
+      return;
+    }
+
+    try {
+      let response = await fetch(
+        `${ip}:${port}/generaSoftland/2025-01-01/2025-01-31/${nroDespacho}`,
+        {
+          method: "GET",
+          mode: "cors",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      let dataResponse = await response.json();
+
+      if (dataResponse.length === 0) {
+        return Swal.fire({
+          icon: "info",
+          title: "No hay datos disponibles",
+          text: "No se encontraron registros para los filtros seleccionados.",
+        });
+      }
+
+      const ws = XLSX.utils.json_to_sheet(dataResponse);
+      const wb = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(wb, ws, "Detalles");
+      XLSX.writeFile(wb, `Softland_${nroDespacho}.xlsx`);
+    } catch (error) {
+      console.error("Error downloading Softland:", error);
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: "No se pudo generar el archivo de Softland.",
+      });
+    }
+  };
+
   const handleClickAprobar = async () => {
     if (!valido) {
       Swal.fire(
@@ -413,6 +469,55 @@ const IndexDetalle = () => {
     });
   };
 
+  const handleClickEstadoSoftland = async () => {
+    let user = sessionStorage.getItem("user");
+    let dataUser = JSON.parse(user);
+    let data = {
+      idImportacion: id,
+      usuarioAprueba: dataUser.email,
+    };
+    let response = await fetch(
+      `${ip}:${port}/importaciones/softlandImportacion`,
+      {
+        method: "POST",
+        mode: "cors",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      }
+    );
+    if (response.ok) {
+      Swal.fire(
+        "Cargado Softland",
+        "La importación ha sido cargada en Softland",
+        "success"
+      );
+      setEstadoSoftland("1");
+    }
+  };
+
+  const handleClickDesSoftland = async () => {
+    let user = sessionStorage.getItem("user");
+    let dataUser = JSON.parse(user);
+    let data = {
+      idImportacion: id,
+      usuarioAprueba: dataUser.email,
+    };
+    let response = await fetch(
+      `${ip}:${port}/importaciones/desSoftlandImportacion`,
+      {
+        method: "POST",
+        mode: "cors",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      }
+    );
+    setEstadoSoftland("0");
+  };
+
   const { user, rutasPermitidas, rutasControladas } = useUserContext();
   const handleClickUpdateTipoCambioAlternativo = async () => {
     const purePathname =
@@ -446,13 +551,14 @@ const IndexDetalle = () => {
         <Typography variant="h6" gutterBottom>
           Importación{" "}
           {nroDespacho +
-            " - Referencia " +
+            " - Ref. " +
             nroRefer +
-            " - Fecha " +
-            fecha +
+            " - Fecha DIN " +
+            (fechaPago ? fechaPago : "Sin Pago") +
             " - " +
             proveedor}
         </Typography>
+
         <Button
           variant="contained"
           color="info"
@@ -480,6 +586,16 @@ const IndexDetalle = () => {
           onClick={handleClickDownloadExcel}
         >
           Excel
+        </Button>
+
+        <Button
+          variant="contained"
+          color="info"
+          size="small"
+          sx={{ ml: 2, mb: 1 }}
+          onClick={handleClickDownloadSoftland}
+        >
+          Genera Softland
         </Button>
 
         <Button
@@ -698,6 +814,39 @@ const IndexDetalle = () => {
                   Cambiar a Ingresado
                 </Button>
               </Box>
+
+              <Box display="flex" justifyContent="flex-end">
+                <Button
+                  variant="contained"
+                  color="primary"
+                  size="small"
+                  sx={{
+                    mb: 1,
+                    ml: 2,
+                  }}
+                  onClick={handleClickEstadoSoftland}
+                  disabled={estadoSoftland === "1"}
+                >
+                  {estadoSoftland === "0"
+                    ? "Cargado Softland"
+                    : "Cargado Softland OK"}
+                </Button>
+
+                <Button
+                  variant="contained"
+                  color="primary"
+                  size="small"
+                  sx={{
+                    mb: 1,
+                    ml: 2,
+                  }}
+                  onClick={handleClickDesSoftland}
+                  hidden={estadoSoftland === "0" || !usuario.includes("(sa)")}
+                >
+                  Cambiar Softland no OK
+                </Button>
+              </Box>
+
               <Typography variant="h10">Detalle</Typography>
 
               <Button

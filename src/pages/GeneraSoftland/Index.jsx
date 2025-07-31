@@ -58,7 +58,7 @@ const Index = () => {
   ) => {
     try {
       let response = await fetch(
-        `${ip}:${port}/generaSoftland/${fechaInicial}/${fechaFinal}`,
+        `${ip}:${port}/generaSoftland/${fechaInicial}/${fechaFinal}/0`,
         {
           method: "GET",
           mode: "cors",
