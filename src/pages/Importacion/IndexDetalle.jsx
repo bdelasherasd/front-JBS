@@ -826,6 +826,7 @@ const IndexDetalle = () => {
                   }}
                   onClick={handleClickEstadoSoftland}
                   disabled={estadoSoftland === "1"}
+                  hidden={estado === "Ingresado"}
                 >
                   {estadoSoftland === "0"
                     ? "Cargado Softland"
