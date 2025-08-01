@@ -345,6 +345,15 @@ const IndexDetalle = () => {
       return;
     }
 
+    if (estado !== "Aprobado") {
+      Swal.fire({
+        icon: "info",
+        title: "Importación no aprobada",
+        text: "No se puede generar el archivo de Softland sin la aprobación de la importación.",
+      });
+      return;
+    }
+
     try {
       let response = await fetch(
         `${ip}:${port}/generaSoftland/2025-01-01/2025-01-31/${nroDespacho}`,
