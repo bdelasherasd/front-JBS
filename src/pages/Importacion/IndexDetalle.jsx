@@ -557,6 +557,19 @@ const IndexDetalle = () => {
           mb: 2,
         }}
       >
+        <Box flex={1} sx={{ mt: 3 }}>
+          <Typography variant="caption">
+            Tipo Cambio Alternativo:
+            <Button
+              variant="outlined"
+              sx={{ ml: 2, mb: 1 }}
+              onClick={() => handleClickUpdateTipoCambioAlternativo()}
+            >
+              {tipoCambioAlternativo}
+            </Button>
+          </Typography>
+        </Box>
+
         <Typography variant="h6" gutterBottom>
           Importación{" "}
           {nroDespacho +
@@ -1182,19 +1195,6 @@ const IndexDetalle = () => {
                   </TableBody>
                 </Table>
               </Paper>
-            </Box>
-
-            <Box flex={1} sx={{ mt: 3 }}>
-              <Typography variant="caption">
-                Tipo Cambio Alternativo:
-                <Button
-                  variant="outlined"
-                  sx={{ ml: 2 }}
-                  onClick={() => handleClickUpdateTipoCambioAlternativo()}
-                >
-                  {tipoCambioAlternativo}
-                </Button>
-              </Typography>
             </Box>
           </Box>
         </Box>
