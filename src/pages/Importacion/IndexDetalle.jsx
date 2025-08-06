@@ -286,6 +286,24 @@ const IndexDetalle = () => {
   };
 
   const handleClickDownloadExcel = async () => {
+    if (!fechaPago) {
+      Swal.fire({
+        icon: "info",
+        title: "Fecha de Pago DIN no disponible",
+        text: "No se puede generar el archivo de sin fecha de pago.",
+      });
+      return;
+    }
+
+    if (estado !== "Aprobado") {
+      Swal.fire({
+        icon: "info",
+        title: "Importación no aprobada",
+        text: "No se puede generar el archivo sin la aprobación de la importación.",
+      });
+      return;
+    }
+
     try {
       // let response = await fetch(
       //   `${ip}:${port}/informeAprobados/list/2025/2025-01-01/2025-01-31/${nroDespacho}`,
