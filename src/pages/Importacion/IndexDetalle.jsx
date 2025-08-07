@@ -60,6 +60,8 @@ const IndexDetalle = () => {
   const [totalPeso, setTotalPeso] = useState(0);
   const [totalValor, setTotalValor] = useState(0);
 
+  const [ejecutandoRobot, setEjecutandoRobot] = useState(false);
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -506,6 +508,7 @@ const IndexDetalle = () => {
       cancelButtonText: "Cancelar",
     }).then(async (result) => {
       if (result.isConfirmed) {
+        setEjecutandoRobot(true);
         let user = sessionStorage.getItem("user");
         let dataUser = JSON.parse(user);
         let data = {
@@ -527,6 +530,7 @@ const IndexDetalle = () => {
         );
         let dataCsv = await reponseCsv.json();
         setFechaPago(dataCsv.fecha_pago);
+        setEjecutandoRobot(false);
         if (response.ok) {
           Swal.fire(
             "Ejecutado",
@@ -908,6 +912,7 @@ const IndexDetalle = () => {
                   }}
                   onClick={handleClickEjecutarRobot}
                   hidden={!usuario.includes("(sa)")}
+                  disabled={ejecutandoRobot}
                 >
                   Ejecutar Robot
                 </Button>
