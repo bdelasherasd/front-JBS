@@ -496,6 +496,50 @@ const IndexDetalle = () => {
     });
   };
 
+  const handleClickEjecutarRobot = async () => {
+    Swal.fire({
+      title: "¿Está seguro?",
+      text: "¿Desea ejecutar el robot para esta importación?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Sí, ejecutar",
+      cancelButtonText: "Cancelar",
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        let user = sessionStorage.getItem("user");
+        let dataUser = JSON.parse(user);
+        let data = {
+          idImportacion: id,
+          usuarioAprueba: dataUser.email,
+        };
+        let response = await fetch(
+          `${ip}:${port}/rpaRossi/procesaAhora/${nroDespacho}`,
+          {
+            method: "GET",
+            mode: "cors",
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
+        let reponseCsv = await fetch(
+          `${ip}:${port}/importaciones/getCsv/${nroDespacho}`
+        );
+        let dataCsv = await reponseCsv.json();
+        setFechaPago(dataCsv.fecha_pago);
+        if (response.ok) {
+          Swal.fire(
+            "Ejecutado",
+            "Robot ha ejecutado la importación",
+            "success"
+          );
+        } else {
+          Swal.fire("Error", "No se pudo desaprobar la importación", "error");
+        }
+      }
+    });
+  };
+
   const handleClickEstadoSoftland = async () => {
     let user = sessionStorage.getItem("user");
     let dataUser = JSON.parse(user);
@@ -852,6 +896,20 @@ const IndexDetalle = () => {
                   hidden={estado === "Ingresado" || !usuario.includes("(sa)")}
                 >
                   Cambiar a Ingresado
+                </Button>
+
+                <Button
+                  variant="contained"
+                  color="primary"
+                  size="small"
+                  sx={{
+                    mb: 1,
+                    ml: 2,
+                  }}
+                  onClick={handleClickEjecutarRobot}
+                  hidden={!usuario.includes("(sa)")}
+                >
+                  Ejecutar Robot
                 </Button>
               </Box>
 
