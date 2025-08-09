@@ -509,6 +509,21 @@ const IndexDetalle = () => {
     }).then(async (result) => {
       if (result.isConfirmed) {
         setEjecutandoRobot(true);
+
+        Swal.fire({
+          title: "Ejecutando Robot...",
+          text: "Por favor espere mientras se ejecuta el robot.",
+          allowOutsideClick: false,
+          allowEscapeKey: false,
+          didOpen: () => {
+            Swal.showLoading();
+          },
+          timer: 30000,
+          timerProgressBar: true,
+          willClose: () => {
+            setEjecutandoRobot(false);
+          },
+        });
         let user = sessionStorage.getItem("user");
         let dataUser = JSON.parse(user);
         let data = {
