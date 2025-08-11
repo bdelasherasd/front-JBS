@@ -42,6 +42,7 @@ import GeneraSoftland from "../pages/GeneraSoftland/Index";
 
 import NotificaProceso from "../pages/NotificaProceso/Index";
 import CargaProveedores from "../pages/CargaProveedor/Index";
+import CargaSeara from "../pages/CargaSeara/Index";
 
 export const router = createBrowserRouter([
   {
@@ -78,6 +79,8 @@ export const router = createBrowserRouter([
           { path: "carga-sku", element: <CargaSku /> },
 
           { path: "carga-proveedores", element: <CargaProveedores /> },
+
+          { path: "carga-seara", element: <CargaSeara /> },
 
           { path: "tareas-programadas", element: <TareasProgramadas /> },
 

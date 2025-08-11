@@ -117,6 +117,11 @@ const NavbarNormal = () => {
     navigate("/dashboard/carga-proveedores");
   };
 
+  const handleClickCargaSeara = () => {
+    //setAnchorEl(null);
+    navigate("/dashboard/carga-seara");
+  };
+
   return (
     <>
       <header
@@ -168,16 +173,34 @@ const NavbarNormal = () => {
                       Robot Agencia Rossi
                     </a>
                   </li>
-                  <li>
-                    <a href="#" onClick={handleClickCargaSku}>
-                      Carga SKU
+
+                  <li className="dropdown">
+                    <a href="#">
+                      <span>Cargas</span>{" "}
+                      <i className="bi bi-chevron-down toggle-dropdown"></i>
                     </a>
+                    <ul
+                      className="submenu"
+                      style={{ display: "block", width: "315px" }}
+                    >
+                      <li>
+                        <a href="#" onClick={handleClickCargaSku}>
+                          Carga SKU
+                        </a>
+                      </li>
+                      <li>
+                        <a href="#" onClick={handleClickCargaProveedores}>
+                          Carga Proveedores
+                        </a>
+                      </li>
+                      <li>
+                        <a href="#" onClick={handleClickCargaSeara}>
+                          Carga SEARA
+                        </a>
+                      </li>
+                    </ul>
                   </li>
-                  <li>
-                    <a href="#" onClick={handleClickCargaProveedores}>
-                      Carga Proveedores
-                    </a>
-                  </li>
+
                   <li>
                     <a href="#" onClick={handleClickImportacion}>
                       Importaciones
