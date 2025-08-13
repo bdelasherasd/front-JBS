@@ -106,6 +106,11 @@ const NavbarMobile = () => {
     navigate("/dashboard/carga-proveedores");
   };
 
+  const handleClickCargaSeara = () => {
+    //setAnchorEl(null);
+    navigate("/dashboard/carga-seara");
+  };
+
   return (
     <Navbar expand="lg" bg="dark" variant="dark" className="px-3">
       <Container>
@@ -180,6 +185,11 @@ const NavbarMobile = () => {
               <NavDropdown.Item href="#" onClick={handleClickCargaProveedores}>
                 Carga Proveedores
               </NavDropdown.Item>
+
+              <NavDropdown.Item href="#" onClick={handleClickCargaSeara}>
+                Carga SEARA
+              </NavDropdown.Item>
+
               <NavDropdown.Item href="#" onClick={handleClickImportacion}>
                 Importaciones
               </NavDropdown.Item>
