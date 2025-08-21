@@ -396,6 +396,15 @@ const IndexDetalle = () => {
       }
 
       const ws = XLSX.utils.json_to_sheet(dataResponse);
+      ws["A1"].z = "@";
+      ws["A1"].t = "s";
+      Object.keys(ws).forEach((cell) => {
+        if (cell.startsWith("A") && cell !== "A1") {
+          ws[cell].z = "@";
+          ws[cell].t = "s";
+        }
+      });
+
       const wb = XLSX.utils.book_new();
       XLSX.utils.book_append_sheet(wb, ws, "Detalles");
       XLSX.writeFile(wb, `Softland_${nroDespacho}.xlsx`);

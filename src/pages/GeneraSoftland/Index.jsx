@@ -78,6 +78,14 @@ const Index = () => {
       }
 
       const ws = XLSX.utils.json_to_sheet(dataResponse);
+      ws["A1"].z = "@";
+      ws["A1"].t = "s";
+      Object.keys(ws).forEach((cell) => {
+        if (cell.startsWith("A") && cell !== "A1") {
+          ws[cell].z = "@";
+          ws[cell].t = "s";
+        }
+      });
       const wb = XLSX.utils.book_new();
       XLSX.utils.book_append_sheet(wb, ws, "Guias de Entrada");
       XLSX.writeFile(wb, "GuiasEntradaSoftland.xlsx");
