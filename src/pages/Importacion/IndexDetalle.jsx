@@ -356,11 +356,11 @@ const IndexDetalle = () => {
   };
 
   const handleClickDownloadSoftland = async () => {
-    if (!fechaPago) {
+    if (!fechaPago && tipoCambioAlternativo === 0) {
       Swal.fire({
         icon: "info",
-        title: "Fecha de Pago DIN no disponible",
-        text: "No se puede generar el archivo de Softland sin la fecha de pago.",
+        title: "Fecha de Pago DIN y Tipo de Cambio no disponible",
+        text: "No se puede generar el archivo de Softland sin la fecha de pago o el tipo de cambio.",
       });
       return;
     }
