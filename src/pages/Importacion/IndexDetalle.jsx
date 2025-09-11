@@ -62,6 +62,8 @@ const IndexDetalle = () => {
 
   const [ejecutandoRobot, setEjecutandoRobot] = useState(false);
 
+  const [menorVencimiento, setMenorVencimiento] = useState("");
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -137,11 +139,23 @@ const IndexDetalle = () => {
         //ordena packing list por fecha de vencimiento
 
         let pl = JSON.parse(data2.packingList || "[]");
-        pl.sort((a, b) => {
-          const dateA = new Date(a.fechaVencimiento);
-          const dateB = new Date(b.fechaVencimiento);
-          return dateA - dateB;
-        });
+
+        let fechaMenor = "";
+        if (pl.length > 0) {
+          // Filtra solo los que tienen fechaVencimiento válida
+          const fechas = pl
+            .map((item) => item.fechaVencimiento)
+            .filter((fecha) => fecha && fecha !== "");
+          if (fechas.length > 0) {
+            // Convierte a Date para comparar
+            fechaMenor = fechas.reduce((min, curr) => {
+              const minDate = new Date(min);
+              const currDate = new Date(curr);
+              return currDate < minDate ? curr : min;
+            });
+          }
+        }
+        setMenorVencimiento(fechaMenor);
 
         setTablePacking(pl);
         tabla = JSON.parse(data2.packingList || "[]");
@@ -255,11 +269,23 @@ const IndexDetalle = () => {
         );
         let data2 = await response2.json();
         let pl = JSON.parse(data2.packingList || "[]");
-        pl.sort((a, b) => {
-          const dateA = new Date(a.fechaVencimiento);
-          const dateB = new Date(b.fechaVencimiento);
-          return dateA - dateB;
-        });
+
+        let fechaMenor = "";
+        if (pl.length > 0) {
+          // Filtra solo los que tienen fechaVencimiento válida
+          const fechas = pl
+            .map((item) => item.fechaVencimiento)
+            .filter((fecha) => fecha && fecha !== "");
+          if (fechas.length > 0) {
+            // Convierte a Date para comparar
+            fechaMenor = fechas.reduce((min, curr) => {
+              const minDate = new Date(min);
+              const currDate = new Date(curr);
+              return currDate < minDate ? curr : min;
+            });
+          }
+        }
+        setMenorVencimiento(fechaMenor);
 
         setTablePacking(pl);
 
@@ -1241,6 +1267,8 @@ const IndexDetalle = () => {
                               sx={{
                                 color: e.vencimientoInvalido
                                   ? "red"
+                                  : e.fechaVencimiento === menorVencimiento
+                                  ? "blue"
                                   : "inherit",
                               }}
                             >
