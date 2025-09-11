@@ -254,7 +254,14 @@ const IndexDetalle = () => {
           `${ip}:${port}/importaciones/listAdicionales/${id}`
         );
         let data2 = await response2.json();
-        setTablePacking(JSON.parse(data2.packingList || "[]"));
+        let pl = JSON.parse(data2.packingList || "[]");
+        pl.sort((a, b) => {
+          const dateA = new Date(a.fechaVencimiento);
+          const dateB = new Date(b.fechaVencimiento);
+          return dateA - dateB;
+        });
+
+        setTablePacking(pl);
 
         Swal.fire("Eliminado", "El detalle ha sido eliminado", "success");
       }
