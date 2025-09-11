@@ -134,7 +134,16 @@ const IndexDetalle = () => {
           setValido(false);
         }
 
-        setTablePacking(JSON.parse(data2.packingList || "[]"));
+        //ordena packing list por fecha de vencimiento
+
+        let pl = JSON.parse(data2.packingList || "[]");
+        pl.sort((a, b) => {
+          const dateA = new Date(a.fechaVencimiento);
+          const dateB = new Date(b.fechaVencimiento);
+          return dateA - dateB;
+        });
+
+        setTablePacking(pl);
         tabla = JSON.parse(data2.packingList || "[]");
         for (let [index, packing] of tabla.entries()) {
           if (
