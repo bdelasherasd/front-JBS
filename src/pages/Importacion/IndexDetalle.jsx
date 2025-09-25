@@ -225,6 +225,27 @@ const IndexDetalle = () => {
         let data2 = await response2.json();
         setTableDetalle(JSON.parse(data2.detalles));
 
+        let tabla = JSON.parse(data2.detalles || "[]");
+        setTotalCantidad(0);
+        setTotalPeso(0);
+        setTotalValor(0);
+        for (let [index, detalle] of tabla.entries()) {
+          if (
+            detalle.codigoInvalido ||
+            detalle.cantidadInvalida ||
+            detalle.valorInvalido ||
+            detalle.peso === "0"
+          ) {
+            setValido(false);
+          }
+          setTotalCantidad((prev) => prev + parseFloat(detalle.cantidad || 0));
+          setTotalPeso((prev) => prev + parseFloat(detalle.peso || 0));
+          setTotalValor((prev) => prev + parseFloat(detalle.valor || 0));
+        }
+        setTotalCantidad((prev) => prev.toFixed(2));
+        setTotalPeso((prev) => prev.toFixed(2));
+        setTotalValor((prev) => prev.toFixed(2));
+
         Swal.fire("Eliminado", "El detalle ha sido eliminado", "success");
       }
     });
