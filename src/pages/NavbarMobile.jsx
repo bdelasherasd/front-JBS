@@ -111,6 +111,11 @@ const NavbarMobile = () => {
     navigate("/dashboard/carga-seara");
   };
 
+  const handleClickNotificaProveedores = () => {
+    //setAnchorEl(null);
+    navigate("/dashboard/notifica-proveedores");
+  };
+
   return (
     <Navbar expand="lg" bg="dark" variant="dark" className="px-3">
       <Container>
@@ -207,6 +212,12 @@ const NavbarMobile = () => {
               </NavDropdown.Item>
               <NavDropdown.Item href="#" onClick={handleClickNotificaProceso}>
                 Agenda Notificador de Proceso
+              </NavDropdown.Item>
+              <NavDropdown.Item
+                href="#"
+                onClick={handleClickNotificaProveedores}
+              >
+                Agenda Notificador de Proveedores Nuevos
               </NavDropdown.Item>
               <NavDropdown.Item href="#" onClick={handleClickGeneraSoftland}>
                 Genera Excel Guias de Entrada Softland

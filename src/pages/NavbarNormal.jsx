@@ -122,6 +122,11 @@ const NavbarNormal = () => {
     navigate("/dashboard/carga-seara");
   };
 
+  const handleClickNotificaProveedores = () => {
+    //setAnchorEl(null);
+    navigate("/dashboard/notifica-proveedores");
+  };
+
   return (
     <>
       <header
@@ -224,6 +229,11 @@ const NavbarNormal = () => {
                   <li>
                     <a href="#" onClick={handleClickNotificaProceso}>
                       Agenda Notificador de Proceso
+                    </a>
+                  </li>
+                  <li>
+                    <a href="#" onClick={handleClickNotificaProveedores}>
+                      Agenda Notificador de Proveedores Nuevos
                     </a>
                   </li>
                   <li>

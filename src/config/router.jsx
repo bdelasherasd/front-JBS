@@ -41,6 +41,7 @@ import InformeAprobadosIndex from "../pages/InformeAprobados/Index";
 import GeneraSoftland from "../pages/GeneraSoftland/Index";
 
 import NotificaProceso from "../pages/NotificaProceso/Index";
+import NotificaProveedores from "../pages/NotificaProveedores/Index";
 import CargaProveedores from "../pages/CargaProveedor/Index";
 import CargaSeara from "../pages/CargaSeara/Index";
 
@@ -126,6 +127,7 @@ export const router = createBrowserRouter([
           },
 
           { path: "notifica-proceso", element: <NotificaProceso /> },
+          { path: "notifica-proveedores", element: <NotificaProveedores /> },
         ],
       },
     ],
