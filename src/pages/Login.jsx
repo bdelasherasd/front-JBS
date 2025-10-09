@@ -45,6 +45,21 @@ const Login = () => {
     { setSubmitting, setErrors, resetForm }
   ) => {
     try {
+      const key = "loginAttempts";
+      const raw = localStorage.getItem(key);
+      const store = raw ? JSON.parse(raw) : {};
+
+      const now = Date.now();
+      const rec = store[email] || { count: 0, until: 0 };
+
+      // Si está bloqueado aún, mostrar mensaje y salir
+      if (rec.until && now < rec.until) {
+        const remainingMin = Math.ceil((rec.until - now) / 60000);
+        return setErrors({
+          password: `Demasiados intentos fallidos. Intenta de nuevo en ${remainingMin} minuto(s).`,
+        });
+      }
+
       const credentialUser = await login({ email: email, password: password });
       //console.log(credentialUser);
       if (!credentialUser.error) {
