@@ -57,6 +57,56 @@ const Login = () => {
         setRutasControladas(rutasControladas);
         resetForm();
       } else {
+        // Control de reintentos por usuario usando localStorage
+        try {
+          const MAX_ATTEMPTS = 5;
+          const LOCK_MINUTES = 15;
+          const LOCK_MS = LOCK_MINUTES * 60 * 1000;
+
+          const key = "loginAttempts";
+          const raw = localStorage.getItem(key);
+          const store = raw ? JSON.parse(raw) : {};
+
+          const now = Date.now();
+          const rec = store[email] || { count: 0, until: 0 };
+
+          // Si está bloqueado aún, mostrar mensaje y salir
+          if (rec.until && now < rec.until) {
+            const remainingMin = Math.ceil((rec.until - now) / 60000);
+            return setErrors({
+              password: `Demasiados intentos fallidos. Intenta de nuevo en ${remainingMin} minuto(s).`,
+            });
+          }
+
+          // Si ya expiró el bloqueo, reiniciar contador
+          if (rec.until && now >= rec.until) {
+            rec.count = 0;
+            rec.until = 0;
+          }
+
+          // Incrementar intento fallido
+          rec.count += 1;
+
+          // Si alcanzó el límite, bloquear por X minutos
+          if (rec.count >= MAX_ATTEMPTS) {
+            rec.until = now + LOCK_MS;
+            rec.count = 0; // opcional: reiniciar contador al bloquear
+            store[email] = rec;
+            localStorage.setItem(key, JSON.stringify(store));
+            return setErrors({
+              password: `Demasiados intentos fallidos. Tu cuenta se ha bloqueado por ${LOCK_MINUTES} minuto(s).`,
+            });
+          }
+
+          // Guardar progreso y enriquecer el mensaje de error
+          store[email] = rec;
+          localStorage.setItem(key, JSON.stringify(store));
+
+          const restantes = MAX_ATTEMPTS - rec.count;
+          credentialUser.error = `${credentialUser.error} (Intento ${rec.count} de ${MAX_ATTEMPTS}. Quedan ${restantes} intento(s))`;
+        } catch {
+          // En caso de fallo en localStorage, continuar con el error original
+        }
         return setErrors({ password: credentialUser.error });
       }
     } catch (error) {
