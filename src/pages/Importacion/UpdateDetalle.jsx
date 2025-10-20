@@ -115,6 +115,12 @@ const UpdateDetalle = () => {
     if (valorInvalido) {
       return setErrors({ valor: "Valor invalido" });
     }
+    let codigoInvalido = await valCodigo(codigo);
+    if (codigoInvalido) {
+      return setErrors({
+        codigo: "Codigo " + codigo + ", no existe en la base de datos",
+      });
+    }
 
     let data = {
       idImportacion: idImportacion,
@@ -168,6 +174,21 @@ const UpdateDetalle = () => {
         return false;
       }
     }
+  };
+
+  const valCodigo = async (codigo) => {
+    let response = await fetch(
+      `${ip}:${port}/importaciones/validaCodigo/${codigo}`,
+      {
+        method: "GET",
+        mode: "cors",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    let dataResponse = await response.json();
+    return dataResponse.error;
   };
 
   return (
